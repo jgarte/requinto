@@ -26,6 +26,13 @@ body {
   text-align: center;
 }
 
+@media (min-width: 601px) {
+  body {
+    transform: scale(1.2);
+    transform-origin: top center;
+  }
+}
+
 button {
   padding: 12px 24px;
   font-size: 1.1em;
