@@ -14,6 +14,15 @@ the requinto is a four string instrument used in [son jarocho](https://en.wikipe
 - audio playback with nylon string sound
 - mobile-friendly responsive design
 - vanilla js
+- property-based tests check all 22 note/state combos
+
+## todos
+
+- look up an explanation or paper on spaced repetition
+
+specifically, i want to show a note less often if the learner gets
+it right consistently, and more often if they tend to struggle to
+remember it
 
 ## license
 
