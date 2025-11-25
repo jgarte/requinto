@@ -90,7 +90,6 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     { string: 1, fret: 0 }, { string: 1, fret: 2 }, { string: 1, fret: 4 }, { string: 1, fret: 5 }
   ];
 
-  ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
   naturalNotes.forEach(note => {
     const stringIndex = config.numStrings - note.string;
     const fretIndex = note.fret;
@@ -99,15 +98,21 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     let y;
 
     if (fretIndex === 0) {
-      // Position open string markers above the nut
+      // Position open string markers above the nut (hollow circles)
       y = config.padding - 15;
+      ctx.strokeStyle = "rgba(200, 200, 200, 0.5)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
+      ctx.stroke();
     } else {
+      // Fretted notes (filled circles)
       y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+      ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
+      ctx.fill();
     }
-
-    ctx.beginPath();
-    ctx.arc(x, y, 8, 0, 2 * Math.PI);
-    ctx.fill();
   });
 
   // Highlight current position
