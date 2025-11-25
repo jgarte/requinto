@@ -246,7 +246,8 @@ function toggleExploreMode() {
   if (exploreMode) {
     drawExploreMode();
   } else {
-    nextQuestion();
+    // Return to training mode with the same note
+    drawFretboard(ctx, canvas, currentNote, showingAnswer);
   }
 }
 
