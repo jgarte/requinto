@@ -40,6 +40,7 @@ let exploreMode = false; // Toggle to show all notes
 // Double-tap/click detection
 let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 300; // milliseconds
+let singleTapTimeout = null;
 
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
@@ -196,6 +197,11 @@ function handleCanvasClick(clientX, clientY) {
 
   // Check for double tap
   if (timeSinceLastTap < DOUBLE_TAP_DELAY) {
+    // Clear any pending single-tap action
+    if (singleTapTimeout) {
+      clearTimeout(singleTapTimeout);
+      singleTapTimeout = null;
+    }
     toggleExploreMode();
     lastTapTime = 0; // Reset to prevent triple-tap
     return;
@@ -210,7 +216,7 @@ function handleCanvasClick(clientX, clientY) {
   const clickY = (clientY - rect.top) * scaleY;
 
   if (exploreMode) {
-    // In explore mode, check if any note was clicked
+    // In explore mode, check if any note was clicked (immediate, no delay)
     for (const note of notes) {
       const notePos = getNotePosition(note);
       const distance = Math.sqrt(
@@ -224,7 +230,7 @@ function handleCanvasClick(clientX, clientY) {
       }
     }
   } else {
-    // Normal training mode
+    // Normal training mode - delay action to detect potential double-tap
     if (!currentNote) return;
 
     const notePos = getNotePosition(currentNote);
@@ -232,12 +238,15 @@ function handleCanvasClick(clientX, clientY) {
       Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
     );
 
-    // If clicked within 20px of the note, show answer; otherwise next question
-    if (distance < 20) {
-      showAnswer();
-    } else {
-      nextQuestion();
-    }
+    // Delay the action to allow double-tap detection
+    singleTapTimeout = setTimeout(() => {
+      if (distance < 20) {
+        showAnswer();
+      } else {
+        nextQuestion();
+      }
+      singleTapTimeout = null;
+    }, DOUBLE_TAP_DELAY);
   }
 }
 
