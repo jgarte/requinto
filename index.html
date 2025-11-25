@@ -32,9 +32,8 @@
 <h1>Requinto Note Trainer</h1>
 
 <div class="prompt" id="prompt"></div>
-<div class="answer" id="answer"></div>
 
-<button onclick="showAnswer()">Show Answer</button>
+<button id="answer" onclick="showAnswer()">Show Answer</button>
 <button onclick="nextQuestion()">Next Note</button>
 
 <script>
@@ -63,12 +62,11 @@ function nextQuestion() {
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   document.getElementById("prompt").textContent =
     `String: ${currentNote.string} 🎸 Fret: ${currentNote.fret}`;
-  document.getElementById("answer").style.display = "none";
+  document.getElementById("answer").textContent = "Show Answer";
 }
 
 function showAnswer() {
-  document.getElementById("answer").textContent = `Note: ${currentNote.note}`;
-  document.getElementById("answer").style.display = "block";
+  document.getElementById("answer").textContent = `${currentNote.note}`;
 }
 
 nextQuestion();
