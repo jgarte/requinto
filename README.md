@@ -6,7 +6,9 @@ web app for training note recognition in open position on the requinto
 
 https://requinto.whereis.social/
 
-the requinto is a four string instrument used in [son jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
+the requinto, also known as the guitarra de
+son, is a four string instrument used in [son
+jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 
 ## features
 
