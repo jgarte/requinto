@@ -41,6 +41,19 @@ function drawNut(padding) {
   ctx.stroke();
 }
 
+function drawStrings(padding, numStrings, stringSpacing) {
+  // Draw strings (vertical lines)
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < numStrings; i++) {
+    const x = padding + i * stringSpacing;
+    ctx.beginPath();
+    ctx.moveTo(x, padding);
+    ctx.lineTo(x, canvas.height - padding);
+    ctx.stroke();
+  }
+}
+
 function drawFretboard() {
   const padding = 40;
   const numStrings = 4;
@@ -52,17 +65,7 @@ function drawFretboard() {
 
   drawFrets(padding, numFrets, fretSpacing);
   drawNut(padding);
-
-  // Draw strings (vertical lines)
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 1;
-  for (let i = 0; i < numStrings; i++) {
-    const x = padding + i * stringSpacing;
-    ctx.beginPath();
-    ctx.moveTo(x, padding);
-    ctx.lineTo(x, canvas.height - padding);
-    ctx.stroke();
-  }
+  drawStrings(padding, numStrings, stringSpacing);
 
   // Draw string names
   ctx.textAlign = "center";
