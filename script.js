@@ -19,15 +19,7 @@ let showingAnswer = false;
 const canvas = document.getElementById("fretboard");
 const ctx = canvas.getContext("2d");
 
-function drawFretboard() {
-  const padding = 40;
-  const numStrings = 4;
-  const numFrets = 6;
-  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
-  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+function drawFrets(padding, numFrets, fretSpacing) {
   // Draw frets (horizontal lines)
   ctx.strokeStyle = "#666";
   ctx.lineWidth = 2;
@@ -45,6 +37,18 @@ function drawFretboard() {
   ctx.moveTo(padding, padding);
   ctx.lineTo(canvas.width - padding, padding);
   ctx.stroke();
+}
+
+function drawFretboard() {
+  const padding = 40;
+  const numStrings = 4;
+  const numFrets = 6;
+  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
+  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawFrets(padding, numFrets, fretSpacing);
 
   // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
