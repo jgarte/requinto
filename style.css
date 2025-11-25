@@ -99,3 +99,25 @@ button:active {
     margin: 15px auto 0 auto;
   }
 }
+
+/* iPhone SE and smaller screens */
+@media (max-width: 400px) {
+  body {
+    padding: 10px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  h1 {
+    font-size: 1.3em;
+    margin: 5px 0 8px 0;
+  }
+
+  #fretboard {
+    width: 240px;
+    height: 400px;
+    max-width: 88vw;
+    max-height: 52vh;
+    margin: 10px auto 0 auto;
+  }
+}
