@@ -80,11 +80,12 @@ test('note position is highlighted when currentNote is provided', () => {
 
   drawFretboard(ctx, canvas, currentNote, false);
 
-  // Should draw a circle for the note position
-  const arcCall = ctx.calls.find(c => c.method === 'arc');
-  assert.ok(arcCall, 'Should draw circle at note position');
+  // Should draw a circle for the note position (radius 15, not 8 for natural notes)
+  const arcCalls = ctx.calls.filter(c => c.method === 'arc');
+  const highlightArc = arcCalls.find(call => call.args[2] === 15);
+  assert.ok(highlightArc, 'Should draw circle at note position');
 
-  const [x, y, radius] = arcCall.args;
+  const [x, y, radius] = highlightArc.args;
   assert.ok(x > 0 && y > 0, 'Note position should be within canvas bounds');
   assert.strictEqual(radius, 15, 'Note indicator should have consistent size');
 });
@@ -115,13 +116,13 @@ test('note position calculation differs by string', () => {
 
   // String 1 (high C)
   drawFretboard(ctx, canvas, { string: 1, fret: 2, note: 'D' }, false);
-  const string1Arc = ctx.calls.find(c => c.method === 'arc');
+  const string1Arc = ctx.calls.filter(c => c.method === 'arc').find(call => call.args[2] === 15);
   const [x1] = string1Arc.args;
 
   // String 4 (low C)
   ctx.calls.length = 0;
   drawFretboard(ctx, canvas, { string: 4, fret: 2, note: 'D' }, false);
-  const string4Arc = ctx.calls.find(c => c.method === 'arc');
+  const string4Arc = ctx.calls.filter(c => c.method === 'arc').find(call => call.args[2] === 15);
   const [x4] = string4Arc.args;
 
   assert.notStrictEqual(x1, x4,
@@ -134,13 +135,13 @@ test('note position calculation differs by fret', () => {
 
   // Fret 0 (open string)
   drawFretboard(ctx, canvas, { string: 2, fret: 0, note: 'G' }, false);
-  const fret0Arc = ctx.calls.find(c => c.method === 'arc');
+  const fret0Arc = ctx.calls.filter(c => c.method === 'arc').find(call => call.args[2] === 15);
   const [, y0] = fret0Arc.args;
 
   // Fret 5
   ctx.calls.length = 0;
   drawFretboard(ctx, canvas, { string: 2, fret: 5, note: 'C' }, false);
-  const fret5Arc = ctx.calls.find(c => c.method === 'arc');
+  const fret5Arc = ctx.calls.filter(c => c.method === 'arc').find(call => call.args[2] === 15);
   const [, y5] = fret5Arc.args;
 
   assert.notStrictEqual(y0, y5,

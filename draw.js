@@ -79,6 +79,37 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
   drawStrings(ctx, canvas, config);
   drawStringNames(ctx, canvas, config);
 
+  // Draw natural note markers (C-D-G-C tuning)
+  // String 4 (C): frets 0, 2, 4, 5
+  // String 3 (D): frets 0, 2, 3, 5
+  // String 2 (G): frets 0, 2, 4, 5
+  // String 1 (C): frets 0, 2, 4, 5
+  const naturalNotes = [
+    { string: 4, fret: 0 }, { string: 4, fret: 2 }, { string: 4, fret: 4 }, { string: 4, fret: 5 },
+    { string: 3, fret: 0 }, { string: 3, fret: 2 }, { string: 3, fret: 3 }, { string: 3, fret: 5 },
+    { string: 2, fret: 0 }, { string: 2, fret: 2 }, { string: 2, fret: 4 }, { string: 2, fret: 5 },
+    { string: 1, fret: 0 }, { string: 1, fret: 2 }, { string: 1, fret: 4 }, { string: 1, fret: 5 }
+  ];
+
+  ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
+  naturalNotes.forEach(note => {
+    const stringIndex = config.numStrings - note.string;
+    const fretIndex = note.fret;
+
+    let x = config.padding + stringIndex * config.stringSpacing;
+    let y;
+
+    if (fretIndex === 0) {
+      y = config.padding;
+    } else {
+      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+    }
+
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+
   // Highlight current position
   if (currentNote) {
     const stringIndex = config.numStrings - currentNote.string;
