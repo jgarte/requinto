@@ -5,6 +5,6 @@ oauth: pages.sr.ht/PAGES:RW
 tasks:
 - package: |
     cd requinto
-    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' . > ../website.tar.gz
+    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' --exclude='justfile' . > ../website.tar.gz
 - upload: |
     hut pages publish --domain requinto.whereis.social website.tar.gz
