@@ -69,6 +69,13 @@ button:active {
   max-width: 100%;
   height: auto;
   touch-action: none;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 0.9em;
+  color: #999;
+  margin: 10px 0 0 0;
 }
 
 footer {

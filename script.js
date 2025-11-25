@@ -54,7 +54,13 @@ function showAnswer() {
 }
 
 // Make functions available globally for onclick handlers
-window.nextQuestion = nextQuestion;
 window.showAnswer = showAnswer;
+
+// Add click/touch event listener to canvas
+canvas.addEventListener('click', nextQuestion);
+canvas.addEventListener('touchend', (e) => {
+  e.preventDefault(); // Prevent mouse event from firing on touch devices
+  nextQuestion();
+});
 
 nextQuestion();
