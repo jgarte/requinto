@@ -1,15 +1,16 @@
-# Requinto Note Trainer
+# requinto note trainer
 
 [![builds.sr.ht status](https://builds.sr.ht/~whereiseveryone/requinto.svg)](https://builds.sr.ht/~whereiseveryone/requinto?)
 
-A web-based note trainer for the requinto, a 4-string classical guitar tuned C-D-G-C.
+a web-based note trainer for the requinto, a four string instrument used in [son jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 
-## Features
+## features
 
-- Visual fretboard with interactive note practice
-- Audio playback with realistic nylon-string sound
-- Mobile-friendly responsive design
+- visual fretboard with interactive note practice
+- audio playback with nylon string sound
+- mobile-friendly responsive design
+- vanilla js
 
-## License
+## license
 
-AGPL-3.0-or-later
+agpl-3.0-or-later
