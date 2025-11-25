@@ -30,7 +30,9 @@ function drawFrets(padding, numFrets, fretSpacing) {
     ctx.lineTo(canvas.width - padding, y);
     ctx.stroke();
   }
+}
 
+function drawNut(padding) {
   // Draw nut (first fret thicker)
   ctx.lineWidth = 5;
   ctx.beginPath();
@@ -49,6 +51,7 @@ function drawFretboard() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   drawFrets(padding, numFrets, fretSpacing);
+  drawNut(padding);
 
   // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
