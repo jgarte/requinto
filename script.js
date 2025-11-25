@@ -282,7 +282,7 @@ let isSpanish = true; // Default to Spanish
 
 const translations = {
   es: 'toca la nota para enseñarla · toca el diapasón para ir a la siguiente',
-  en: 'tap the note to show it · tap the fretboard to go to the next'
+  en: 'tap the note to show it · tap the board to go to the next'
 };
 
 hintElement.addEventListener('click', () => {
