@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Requinto Note Trainer</title>
 <style>
   body {
@@ -30,6 +31,25 @@
     margin: 30px auto;
     border: 1px solid #ccc;
     display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 600px) {
+    body {
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.5em;
+    }
+    button {
+      font-size: 1em;
+      padding: 8px 12px;
+      margin: 5px;
+    }
+    #fretboard {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 </style>
 </head>
