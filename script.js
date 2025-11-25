@@ -38,6 +38,12 @@ const notes = [
 let currentNote = null;
 let showingAnswer = false;
 
+// Spaced repetition: track when each note was last shown
+const noteHistory = new Map();
+notes.forEach((note, index) => {
+  noteHistory.set(index, Date.now() - (index * 1000)); // Stagger initial times
+});
+
 const canvas = document.getElementById("fretboard");
 const ctx = canvas.getContext("2d");
 
@@ -113,12 +119,37 @@ function playNote(frequency) {
   masterGain.connect(audioContext.destination);
 }
 
-function randomNote(notes) {
-  return notes[Math.floor(Math.random() * notes.length)];
+function selectNextNote() {
+  const now = Date.now();
+  const currentIndex = currentNote ? notes.indexOf(currentNote) : -1;
+
+  // Calculate weights based on time since last shown
+  const weights = notes.map((note, index) => {
+    if (index === currentIndex) return 0; // Never select the same note twice
+
+    const timeSinceShown = now - noteHistory.get(index);
+    // Weight increases with time: notes not seen for 10+ seconds get full weight
+    const weight = Math.min(timeSinceShown / 10000, 1);
+    return Math.max(weight, 0.1); // Minimum weight of 0.1 for all notes
+  });
+
+  // Weighted random selection
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+  let random = Math.random() * totalWeight;
+
+  for (let i = 0; i < notes.length; i++) {
+    random -= weights[i];
+    if (random <= 0) {
+      noteHistory.set(i, now); // Record when this note was shown
+      return notes[i];
+    }
+  }
+
+  return notes[0]; // Fallback
 }
 
 function nextQuestion() {
-  currentNote = randomNote(notes);
+  currentNote = selectNextNote();
   showingAnswer = false;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
