@@ -60,28 +60,57 @@ function getNoteFrequency(note) {
 
 function playNote(frequency) {
   const now = audioContext.currentTime;
+  const duration = 2.5;
 
-  // Create oscillator for the fundamental frequency
-  const oscillator = audioContext.createOscillator();
-  oscillator.type = 'triangle'; // Warmer sound than sine
-  oscillator.frequency.setValueAtTime(frequency, now);
+  // Create a low-pass filter to simulate body resonance
+  const filter = audioContext.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(3000, now);
+  filter.Q.setValueAtTime(1, now);
 
-  // Create gain node for envelope shaping
-  const gainNode = audioContext.createGain();
+  // Master gain for overall volume
+  const masterGain = audioContext.createGain();
+  masterGain.gain.setValueAtTime(0, now);
+  masterGain.gain.linearRampToValueAtTime(0.25, now + 0.003); // Very quick attack
+  masterGain.gain.exponentialRampToValueAtTime(0.15, now + 0.05); // Initial bright decay
+  masterGain.gain.exponentialRampToValueAtTime(0.05, now + 0.3); // Settle
+  masterGain.gain.exponentialRampToValueAtTime(0.01, now + duration); // Long decay
 
-  // Plucked string envelope: quick attack, moderate decay/release
-  gainNode.gain.setValueAtTime(0, now);
-  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.005); // Fast attack
-  gainNode.gain.exponentialRampToValueAtTime(0.1, now + 0.1); // Initial decay
-  gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5); // Sustain/release
+  // Create harmonics for richer sound (fundamental + overtones)
+  const harmonics = [
+    { freq: frequency, gain: 0.4 },        // Fundamental
+    { freq: frequency * 2, gain: 0.3 },    // 2nd harmonic
+    { freq: frequency * 3, gain: 0.15 },   // 3rd harmonic
+    { freq: frequency * 4, gain: 0.08 },   // 4th harmonic
+    { freq: frequency * 5, gain: 0.04 },   // 5th harmonic
+    { freq: frequency * 6, gain: 0.02 }    // 6th harmonic
+  ];
 
-  // Connect the nodes
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  harmonics.forEach((harmonic, index) => {
+    const osc = audioContext.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(harmonic.freq, now);
 
-  // Start and stop the oscillator
-  oscillator.start(now);
-  oscillator.stop(now + 1.5);
+    const harmonicGain = audioContext.createGain();
+    harmonicGain.gain.setValueAtTime(harmonic.gain, now);
+
+    // Higher harmonics decay faster (nylon string characteristic)
+    const decayRate = 1 + (index * 0.3);
+    harmonicGain.gain.exponentialRampToValueAtTime(
+      harmonic.gain * 0.01,
+      now + duration / decayRate
+    );
+
+    osc.connect(harmonicGain);
+    harmonicGain.connect(filter);
+
+    osc.start(now);
+    osc.stop(now + duration);
+  });
+
+  // Connect filter to master gain to output
+  filter.connect(masterGain);
+  masterGain.connect(audioContext.destination);
 }
 
 function randomNote(notes) {
