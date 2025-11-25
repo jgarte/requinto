@@ -58,8 +58,12 @@ const notes = [
 
 let currentNote = null;
 
+function randomNote(notes) {
+  return notes[Math.floor(Math.random() * notes.length)];
+}
+
 function nextQuestion() {
-  currentNote = notes[Math.floor(Math.random() * notes.length)];
+  currentNote = randomNote(notes);
   document.getElementById("prompt").textContent =
     `String: ${currentNote.string} 🎸 Fret: ${currentNote.fret}`;
   document.getElementById("answer").textContent = "Show Answer";
