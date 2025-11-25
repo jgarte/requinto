@@ -99,7 +99,8 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     let y;
 
     if (fretIndex === 0) {
-      y = config.padding;
+      // Position open string markers above the nut
+      y = config.padding - 15;
     } else {
       y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
     }
