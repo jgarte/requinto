@@ -53,10 +53,9 @@ export function drawStringNames(ctx, canvas, config) {
   // Draw string names
   ctx.fillStyle = "#999";
   ctx.textAlign = "center";
-  const stringNames = ["C", "D", "G", "C"];
   for (let i = 0; i < config.numStrings; i++) {
     const x = config.padding + i * config.stringSpacing;
-    ctx.fillText(`${stringNames[i]}`, x, config.padding - 15);
+    ctx.fillText(`${config.stringNames[i]}`, x, config.padding - 15);
   }
 }
 
@@ -65,6 +64,7 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     padding: 40,
     numStrings: 4,
     numFrets: 5,
+    stringNames: ["C", "D", "G", "C"],
     stringSpacing: 0,
     fretSpacing: 0
   };
