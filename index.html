@@ -124,7 +124,7 @@ function drawFretboard() {
 
   // Draw string names
   ctx.textAlign = "center";
-  const stringNames = ["C", "G", "D", "C"];
+  const stringNames = ["C", "D", "G", "C"];
   for (let i = 0; i < numStrings; i++) {
     const x = padding + i * stringSpacing;
     ctx.fillText(`${stringNames[i]}`, x, padding - 15);
@@ -132,7 +132,7 @@ function drawFretboard() {
 
   // Highlight current position
   if (currentNote) {
-    const stringIndex = currentNote.string - 1;
+    const stringIndex = numStrings - currentNote.string;
     const fretIndex = currentNote.fret;
 
     let x, y;
