@@ -15,6 +15,7 @@ the requinto is a four string instrument used in [son jarocho](https://en.wikipe
 - mobile-friendly responsive design
 - vanilla js
 - property-based tests check all 22 note/state combos
+- double tap fretboard to display and play through all notes
 
 ## todos
 
