@@ -25,6 +25,8 @@ specifically, i want to show a note less often if the learner gets
 it right consistently, and more often if they tend to struggle to
 remember it
 
+- detect language and set app instructions accordingly?
+
 ## license
 
 agpl-3.0-or-later
