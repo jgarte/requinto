@@ -2,11 +2,13 @@ image: alpine/edge
 packages:
 - hut
 - nodejs
+- npm
 - esbuild
 oauth: pages.sr.ht/PAGES:RW
 tasks:
 - test: |
     cd requinto
+    npm install
     node --test
 - build: |
     cd requinto
