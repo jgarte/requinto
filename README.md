@@ -15,7 +15,7 @@ jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 - visual fretboard with interactive note practice
 - audio playback with nylon string sound
 - mobile-friendly responsive design
-- vanilla js
+- vanilla js and css
 - property-based tests check all note/state combos
 - double tap fretboard to display and play through all notes
 
