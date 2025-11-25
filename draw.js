@@ -64,7 +64,7 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
   const config = {
     padding: 40,
     numStrings: 4,
-    numFrets: 6,
+    numFrets: 5,
     stringSpacing: 0,
     fretSpacing: 0
   };
