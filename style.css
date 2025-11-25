@@ -71,6 +71,24 @@ button:active {
   touch-action: none;
 }
 
+footer {
+  margin-top: 30px;
+  padding-bottom: 20px;
+  font-size: 0.9em;
+  color: #999;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: #666;
+  text-decoration: underline;
+}
+
 @media (max-width: 600px) {
   body {
     padding: 15px;
