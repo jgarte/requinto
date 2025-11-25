@@ -59,8 +59,8 @@
 
 <canvas id="fretboard" width="300" height="500"></canvas>
 
-<button id="answer" onclick="showAnswer()">Show Answer</button>
-<button onclick="nextQuestion()">Next Note</button>
+<button id="answer" onclick="showAnswer()">Show</button>
+<button onclick="nextQuestion()">Next</button>
 
 <script>
 const notes = [
@@ -122,15 +122,6 @@ function drawFretboard() {
     ctx.stroke();
   }
 
-  // Draw fret numbers
-  ctx.fillStyle = "#999";
-  ctx.font = "12px sans-serif";
-  ctx.textAlign = "left";
-  for (let i = 0; i <= numFrets; i++) {
-    const y = padding + i * fretSpacing;
-    ctx.fillText(i.toString(), canvas.width - padding + 5, y + 4);
-  }
-
   // Draw string names
   ctx.textAlign = "center";
   const stringNames = ["C", "G", "D", "C"];
@@ -176,7 +167,7 @@ function randomNote(notes) {
 function nextQuestion() {
   currentNote = randomNote(notes);
   showingAnswer = false;
-  document.getElementById("answer").textContent = "Show Answer";
+  document.getElementById("answer").textContent = "Show";
   drawFretboard();
 }
 
