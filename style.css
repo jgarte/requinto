@@ -28,7 +28,7 @@ body {
 
 @media (min-width: 601px) {
   body {
-    transform: scale(1.2);
+    transform: scale(1.0);
     transform-origin: top center;
   }
 }
