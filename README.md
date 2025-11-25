@@ -2,9 +2,11 @@
 
 [![builds.sr.ht status](https://builds.sr.ht/~whereiseveryone/requinto.svg)](https://builds.sr.ht/~whereiseveryone/requinto?)
 
-a web-based note trainer for the requinto, a four string instrument used in [son jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
+web app for training note recognition in open position on the requinto
 
 https://requinto.whereis.social/
+
+the requinto is a four string instrument used in [son jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 
 ## features
 
