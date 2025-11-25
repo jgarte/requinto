@@ -37,6 +37,49 @@ let showingAnswer = false;
 const canvas = document.getElementById("fretboard");
 const ctx = canvas.getContext("2d");
 
+// Audio setup
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// Open string frequencies for C-D-G-C tuning
+const openStringFrequencies = {
+  4: 130.81, // C3
+  3: 146.83, // D3
+  2: 196.00, // G3
+  1: 261.63  // C4
+};
+
+function getNoteFrequency(note) {
+  const openFreq = openStringFrequencies[note.string];
+  // Each fret increases pitch by one semitone (multiply by 2^(1/12))
+  return openFreq * Math.pow(2, note.fret / 12);
+}
+
+function playNote(frequency) {
+  const now = audioContext.currentTime;
+
+  // Create oscillator for the fundamental frequency
+  const oscillator = audioContext.createOscillator();
+  oscillator.type = 'triangle'; // Warmer sound than sine
+  oscillator.frequency.setValueAtTime(frequency, now);
+
+  // Create gain node for envelope shaping
+  const gainNode = audioContext.createGain();
+
+  // Plucked string envelope: quick attack, moderate decay/release
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.005); // Fast attack
+  gainNode.gain.exponentialRampToValueAtTime(0.1, now + 0.1); // Initial decay
+  gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5); // Sustain/release
+
+  // Connect the nodes
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  // Start and stop the oscillator
+  oscillator.start(now);
+  oscillator.stop(now + 1.5);
+}
+
 function randomNote(notes) {
   return notes[Math.floor(Math.random() * notes.length)];
 }
@@ -50,6 +93,10 @@ function nextQuestion() {
 function showAnswer() {
   showingAnswer = true;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
+
+  // Play the note
+  const frequency = getNoteFrequency(currentNote);
+  playNote(frequency);
 }
 
 // Calculate note position on canvas
