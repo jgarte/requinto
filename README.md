@@ -4,6 +4,8 @@
 
 a web-based note trainer for the requinto, a four string instrument used in [son jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 
+https://requinto.whereis.social/
+
 ## features
 
 - visual fretboard with interactive note practice
