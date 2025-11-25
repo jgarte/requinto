@@ -44,7 +44,7 @@ function randomNote(notes) {
 function nextQuestion() {
   currentNote = randomNote(notes);
   showingAnswer = false;
-  document.getElementById("answer").textContent = "Show";
+  document.getElementById("answer").textContent = "show";
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
