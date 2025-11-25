@@ -54,6 +54,17 @@ function drawStrings(padding, numStrings, stringSpacing) {
   }
 }
 
+function drawStringNames(padding, numStrings, stringSpacing) {
+  // Draw string names
+  ctx.fillStyle = "#999";
+  ctx.textAlign = "center";
+  const stringNames = ["C", "D", "G", "C"];
+  for (let i = 0; i < numStrings; i++) {
+    const x = padding + i * stringSpacing;
+    ctx.fillText(`${stringNames[i]}`, x, padding - 15);
+  }
+}
+
 function drawFretboard() {
   const padding = 40;
   const numStrings = 4;
@@ -66,14 +77,7 @@ function drawFretboard() {
   drawFrets(padding, numFrets, fretSpacing);
   drawNut(padding);
   drawStrings(padding, numStrings, stringSpacing);
-
-  // Draw string names
-  ctx.textAlign = "center";
-  const stringNames = ["C", "D", "G", "C"];
-  for (let i = 0; i < numStrings; i++) {
-    const x = padding + i * stringSpacing;
-    ctx.fillText(`${stringNames[i]}`, x, padding - 15);
-  }
+  drawStringNames(padding, numStrings, stringSpacing);
 
   // Highlight current position
   if (currentNote) {
