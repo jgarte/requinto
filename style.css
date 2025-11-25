@@ -140,9 +140,9 @@ footer a:hover {
 
   #fretboard {
     width: 240px;
-    height: 400px;
+    height: 480px;
     max-width: 88vw;
-    max-height: 52vh;
+    max-height: 60vh;
     margin: 10px auto 0 auto;
   }
 }
