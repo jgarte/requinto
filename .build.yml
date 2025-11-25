@@ -1,10 +1,14 @@
 image: alpine/edge
 packages:
 - hut
+- nodejs
 oauth: pages.sr.ht/PAGES:RW
 tasks:
+- test: |
+    cd requinto
+    node --test
 - package: |
     cd requinto
-    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' --exclude='justfile' . > ../website.tar.gz
+    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' --exclude='justfile' --exclude='node_modules' --exclude='package.json' --exclude='package-lock.json' --exclude='*.test.js' . > ../website.tar.gz
 - upload: |
     hut pages publish --domain requinto.whereis.social website.tar.gz
