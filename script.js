@@ -18,6 +18,7 @@ import { drawFretboard } from './draw.js';
 
 const notes = [
   { string: 4, fret: 0, note: "C" },
+  { string: 4, fret: 2, note: "D" },
 
   { string: 3, fret: 0, note: "D" },
   { string: 3, fret: 2, note: "E" },
