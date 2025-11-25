@@ -132,7 +132,7 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     // Draw circle at position
     ctx.fillStyle = "#FF6B6B";
     ctx.beginPath();
-    ctx.arc(x, y, 15, 0, 2 * Math.PI);
+    ctx.arc(x, y, 12, 0, 2 * Math.PI);
     ctx.fill();
 
     // If showing answer, display note name

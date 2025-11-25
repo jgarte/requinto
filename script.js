@@ -170,8 +170,8 @@ function handleCanvasClick(clientX, clientY) {
     Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
   );
 
-  // If clicked within 25px of the note, show answer; otherwise next question
-  if (distance < 25) {
+  // If clicked within 20px of the note, show answer; otherwise next question
+  if (distance < 20) {
     showAnswer();
   } else {
     nextQuestion();
