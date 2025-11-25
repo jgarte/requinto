@@ -1,4 +1,4 @@
-# requinto note trainer
+# requinto
 
 [![builds.sr.ht status](https://builds.sr.ht/~whereiseveryone/requinto.svg)](https://builds.sr.ht/~whereiseveryone/requinto?)
 
