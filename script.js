@@ -39,7 +39,7 @@ let exploreMode = false; // Toggle to show all notes
 
 // Double-tap/click detection
 let lastTapTime = 0;
-const DOUBLE_TAP_DELAY = 300; // milliseconds
+const DOUBLE_TAP_DELAY = 200; // milliseconds
 let singleTapTimeout = null;
 
 // Spaced repetition: track when each note was last shown
