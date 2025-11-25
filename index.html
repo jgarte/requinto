@@ -25,38 +25,128 @@
     margin-top: 20px;
     display: none;
   }
+  #fretboard {
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    display: block;
+  }
 </style>
 </head>
 <body>
 
 <h1>Requinto Note Trainer</h1>
 
-<div class="prompt" id="prompt"></div>
+<canvas id="fretboard" width="600" height="200"></canvas>
 
 <button id="answer" onclick="showAnswer()">Show Answer</button>
 <button onclick="nextQuestion()">Next Note</button>
 
 <script>
 const notes = [
-  { string: 4, fret: 0, note: "C" },
   { string: 4, fret: 2, note: "D" },
   { string: 4, fret: 4, note: "E" },
 
-  { string: 3, fret: 0, note: "D" },
   { string: 3, fret: 2, note: "E" },
   { string: 3, fret: 3, note: "F" },
 
-  { string: 2, fret: 0, note: "G" },
   { string: 2, fret: 2, note: "A" },
   { string: 2, fret: 4, note: "B" },
 
-  { string: 1, fret: 0, note: "C" },
   { string: 1, fret: 2, note: "D" },
   { string: 1, fret: 4, note: "E" },
   { string: 1, fret: 5, note: "F" }
 ];
 
 let currentNote = null;
+let showingAnswer = false;
+
+const canvas = document.getElementById("fretboard");
+const ctx = canvas.getContext("2d");
+
+function drawFretboard() {
+  const padding = 40;
+  const numStrings = 4;
+  const numFrets = 6;
+  const stringSpacing = (canvas.height - 2 * padding) / (numStrings - 1);
+  const fretSpacing = (canvas.width - 2 * padding) / numFrets;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw frets (vertical lines)
+  ctx.strokeStyle = "#666";
+  ctx.lineWidth = 2;
+  for (let i = 0; i <= numFrets; i++) {
+    const x = padding + i * fretSpacing;
+    ctx.beginPath();
+    ctx.moveTo(x, padding);
+    ctx.lineTo(x, canvas.height - padding);
+    ctx.stroke();
+  }
+
+  // Draw nut (first fret thicker)
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(padding, padding);
+  ctx.lineTo(padding, canvas.height - padding);
+  ctx.stroke();
+
+  // Draw strings (horizontal lines)
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < numStrings; i++) {
+    const y = padding + i * stringSpacing;
+    ctx.beginPath();
+    ctx.moveTo(padding, y);
+    ctx.lineTo(canvas.width - padding, y);
+    ctx.stroke();
+  }
+
+  // Draw fret numbers
+  ctx.fillStyle = "#999";
+  ctx.font = "12px sans-serif";
+  ctx.textAlign = "center";
+  for (let i = 0; i <= numFrets; i++) {
+    const x = padding + i * fretSpacing;
+    ctx.fillText(i.toString(), x, canvas.height - padding + 20);
+  }
+
+  // Draw string names
+  ctx.textAlign = "right";
+  const stringNames = ["C", "G", "D", "C"];
+  for (let i = 0; i < numStrings; i++) {
+    const y = padding + i * stringSpacing;
+    ctx.fillText(`${stringNames[i]}`, padding - 15, y + 4);
+  }
+
+  // Highlight current position
+  if (currentNote) {
+    const stringIndex = currentNote.string - 1;
+    const fretIndex = currentNote.fret;
+
+    let x, y;
+    y = padding + stringIndex * stringSpacing;
+
+    if (fretIndex === 0) {
+      x = padding;
+    } else {
+      x = padding + fretIndex * fretSpacing - fretSpacing / 2;
+    }
+
+    // Draw circle at position
+    ctx.fillStyle = "#FF6B6B";
+    ctx.beginPath();
+    ctx.arc(x, y, 15, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // If showing answer, display note name
+    if (showingAnswer) {
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 16px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(currentNote.note, x, y + 5);
+    }
+  }
+}
 
 function randomNote(notes) {
   return notes[Math.floor(Math.random() * notes.length)];
@@ -64,13 +154,14 @@ function randomNote(notes) {
 
 function nextQuestion() {
   currentNote = randomNote(notes);
-  document.getElementById("prompt").textContent =
-    `String: ${currentNote.string} 🎸 Fret: ${currentNote.fret}`;
+  showingAnswer = false;
   document.getElementById("answer").textContent = "Show Answer";
+  drawFretboard();
 }
 
 function showAnswer() {
-  document.getElementById("answer").textContent = `${currentNote.note}`;
+  showingAnswer = true;
+  drawFretboard();
 }
 
 nextQuestion();
