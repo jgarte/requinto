@@ -44,7 +44,6 @@ function randomNote(notes) {
 function nextQuestion() {
   currentNote = randomNote(notes);
   showingAnswer = false;
-  document.getElementById("answer").textContent = "show";
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
@@ -53,14 +52,61 @@ function showAnswer() {
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
-// Make functions available globally for onclick handlers
-window.showAnswer = showAnswer;
+// Calculate note position on canvas
+function getNotePosition(note) {
+  const padding = 40;
+  const numStrings = 4;
+  const numFrets = 5;
+  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
+  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
 
-// Add click/touch event listener to canvas
-canvas.addEventListener('click', nextQuestion);
+  const stringIndex = numStrings - note.string;
+  const fretIndex = note.fret;
+
+  const x = padding + stringIndex * stringSpacing;
+  let y;
+
+  if (fretIndex === 0) {
+    y = padding;
+  } else {
+    y = padding + fretIndex * fretSpacing - fretSpacing / 2;
+  }
+
+  return { x, y };
+}
+
+// Handle canvas click/touch
+function handleCanvasClick(clientX, clientY) {
+  if (!currentNote) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const clickX = (clientX - rect.left) * scaleX;
+  const clickY = (clientY - rect.top) * scaleY;
+
+  const notePos = getNotePosition(currentNote);
+  const distance = Math.sqrt(
+    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+  );
+
+  // If clicked within 25px of the note, show answer; otherwise next question
+  if (distance < 25) {
+    showAnswer();
+  } else {
+    nextQuestion();
+  }
+}
+
+// Add click/touch event listeners
+canvas.addEventListener('click', (e) => {
+  handleCanvasClick(e.clientX, e.clientY);
+});
+
 canvas.addEventListener('touchend', (e) => {
-  e.preventDefault(); // Prevent mouse event from firing on touch devices
-  nextQuestion();
+  e.preventDefault();
+  const touch = e.changedTouches[0];
+  handleCanvasClick(touch.clientX, touch.clientY);
 });
 
 nextQuestion();
