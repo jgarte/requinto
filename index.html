@@ -36,7 +36,7 @@
 
 <h1>Requinto Note Trainer</h1>
 
-<canvas id="fretboard" width="600" height="200"></canvas>
+<canvas id="fretboard" width="300" height="500"></canvas>
 
 <button id="answer" onclick="showAnswer()">Show Answer</button>
 <button onclick="nextQuestion()">Next Note</button>
@@ -67,19 +67,19 @@ function drawFretboard() {
   const padding = 40;
   const numStrings = 4;
   const numFrets = 6;
-  const stringSpacing = (canvas.height - 2 * padding) / (numStrings - 1);
-  const fretSpacing = (canvas.width - 2 * padding) / numFrets;
+  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
+  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw frets (vertical lines)
+  // Draw frets (horizontal lines)
   ctx.strokeStyle = "#666";
   ctx.lineWidth = 2;
   for (let i = 0; i <= numFrets; i++) {
-    const x = padding + i * fretSpacing;
+    const y = padding + i * fretSpacing;
     ctx.beginPath();
-    ctx.moveTo(x, padding);
-    ctx.lineTo(x, canvas.height - padding);
+    ctx.moveTo(padding, y);
+    ctx.lineTo(canvas.width - padding, y);
     ctx.stroke();
   }
 
@@ -87,35 +87,35 @@ function drawFretboard() {
   ctx.lineWidth = 5;
   ctx.beginPath();
   ctx.moveTo(padding, padding);
-  ctx.lineTo(padding, canvas.height - padding);
+  ctx.lineTo(canvas.width - padding, padding);
   ctx.stroke();
 
-  // Draw strings (horizontal lines)
+  // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
   for (let i = 0; i < numStrings; i++) {
-    const y = padding + i * stringSpacing;
+    const x = padding + i * stringSpacing;
     ctx.beginPath();
-    ctx.moveTo(padding, y);
-    ctx.lineTo(canvas.width - padding, y);
+    ctx.moveTo(x, padding);
+    ctx.lineTo(x, canvas.height - padding);
     ctx.stroke();
   }
 
   // Draw fret numbers
   ctx.fillStyle = "#999";
   ctx.font = "12px sans-serif";
-  ctx.textAlign = "center";
+  ctx.textAlign = "left";
   for (let i = 0; i <= numFrets; i++) {
-    const x = padding + i * fretSpacing;
-    ctx.fillText(i.toString(), x, canvas.height - padding + 20);
+    const y = padding + i * fretSpacing;
+    ctx.fillText(i.toString(), canvas.width - padding + 5, y + 4);
   }
 
   // Draw string names
-  ctx.textAlign = "right";
+  ctx.textAlign = "center";
   const stringNames = ["C", "G", "D", "C"];
   for (let i = 0; i < numStrings; i++) {
-    const y = padding + i * stringSpacing;
-    ctx.fillText(`${stringNames[i]}`, padding - 15, y + 4);
+    const x = padding + i * stringSpacing;
+    ctx.fillText(`${stringNames[i]}`, x, padding - 15);
   }
 
   // Highlight current position
@@ -124,12 +124,12 @@ function drawFretboard() {
     const fretIndex = currentNote.fret;
 
     let x, y;
-    y = padding + stringIndex * stringSpacing;
+    x = padding + stringIndex * stringSpacing;
 
     if (fretIndex === 0) {
-      x = padding;
+      y = padding;
     } else {
-      x = padding + fretIndex * fretSpacing - fretSpacing / 2;
+      y = padding + fretIndex * fretSpacing - fretSpacing / 2;
     }
 
     // Draw circle at position
