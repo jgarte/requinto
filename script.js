@@ -276,4 +276,24 @@ canvas.addEventListener('touchend', (e) => {
   handleCanvasClick(touch.clientX, touch.clientY);
 });
 
+// Language toggle for hint text
+const hintElement = document.getElementById('hint');
+let isSpanish = true; // Default to Spanish
+
+const translations = {
+  es: 'toca la nota para enseñarla · toca el diapasón para ver la siguiente',
+  en: 'tap note to show · tap fretboard for next'
+};
+
+hintElement.addEventListener('click', () => {
+  isSpanish = !isSpanish;
+  hintElement.textContent = isSpanish ? translations.es : translations.en;
+});
+
+hintElement.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  isSpanish = !isSpanish;
+  hintElement.textContent = isSpanish ? translations.es : translations.en;
+});
+
 nextQuestion();
