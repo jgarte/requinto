@@ -124,7 +124,7 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     x = config.padding + stringIndex * config.stringSpacing;
 
     if (fretIndex === 0) {
-      y = config.padding;
+      y = config.padding - 15;
     } else {
       y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
     }

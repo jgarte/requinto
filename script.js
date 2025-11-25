@@ -147,7 +147,7 @@ function getNotePosition(note) {
   let y;
 
   if (fretIndex === 0) {
-    y = padding;
+    y = padding - 15;
   } else {
     y = padding + fretIndex * fretSpacing - fretSpacing / 2;
   }
