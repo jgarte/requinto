@@ -16,7 +16,7 @@ jarocho](https://en.wikipedia.org/wiki/Son_jarocho) musics
 - audio playback with nylon string sound
 - mobile-friendly responsive design
 - vanilla js and css
-- property-based tests check all note/state combos
+- property-based tests check all note/state combinations
 - double tap fretboard to display and play through all notes
 
 ## todos
