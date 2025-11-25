@@ -1,0 +1,10 @@
+image: alpine/edge
+packages:
+- hut
+oauth: pages.sr.ht/PAGES:RW
+tasks:
+- package: |
+    cd requinto
+    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' . > ../website.tar.gz
+- upload: |
+    hut pages publish --domain requinto.whereis.social website.tar.gz

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Requinto Note Trainer</title>
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 40px;
+    max-width: 600px;
+    margin: auto;
+  }
+  button {
+    padding: 10px 16px;
+    font-size: 1.1em;
+    margin-right: 10px;
+  }
+  .prompt {
+    font-size: 1.7em;
+    font-weight: bold;
+    margin-top: 30px;
+  }
+  .answer {
+    font-size: 1.7em;
+    margin-top: 20px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Requinto Note Trainer</h1>
+
+<div class="prompt" id="prompt"></div>
+<div class="answer" id="answer"></div>
+
+<button onclick="showAnswer()">Show Answer</button>
+<button onclick="nextQuestion()">Next Note</button>
+
+<script>
+const notes = [
+  { string: 4, fret: 0, note: "C" },
+  { string: 4, fret: 2, note: "D" },
+  { string: 4, fret: 4, note: "E" },
+
+  { string: 3, fret: 0, note: "D" },
+  { string: 3, fret: 2, note: "E" },
+  { string: 3, fret: 3, note: "F" },
+
+  { string: 2, fret: 0, note: "G" },
+  { string: 2, fret: 2, note: "A" },
+  { string: 2, fret: 4, note: "B" },
+
+  { string: 1, fret: 0, note: "C" },
+  { string: 1, fret: 2, note: "D" },
+  { string: 1, fret: 4, note: "E" },
+  { string: 1, fret: 5, note: "F" }
+];
+
+let currentNote = null;
+
+function nextQuestion() {
+  currentNote = notes[Math.floor(Math.random() * notes.length)];
+  document.getElementById("prompt").textContent =
+    `String: ${currentNote.string} 🎸 Fret: ${currentNote.fret}`;
+  document.getElementById("answer").style.display = "none";
+}
+
+function showAnswer() {
+  document.getElementById("answer").textContent = `Note: ${currentNote.note}`;
+  document.getElementById("answer").style.display = "block";
+}
+
+nextQuestion();
+</script>
+
+</body>
+</html>
