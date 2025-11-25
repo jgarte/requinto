@@ -17,15 +17,19 @@
 import { drawFretboard } from './draw.js';
 
 const notes = [
+  { string: 4, fret: 0, note: "C" },
   { string: 4, fret: 2, note: "D" },
   { string: 4, fret: 4, note: "E" },
 
+  { string: 3, fret: 0, note: "D" },
   { string: 3, fret: 2, note: "E" },
   { string: 3, fret: 3, note: "F" },
 
+  { string: 2, fret: 0, note: "G" },
   { string: 2, fret: 2, note: "A" },
   { string: 2, fret: 4, note: "B" },
 
+  { string: 1, fret: 0, note: "C" },
   { string: 1, fret: 2, note: "D" },
   { string: 1, fret: 4, note: "E" },
   { string: 1, fret: 5, note: "F" }
