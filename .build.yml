@@ -2,13 +2,21 @@ image: alpine/edge
 packages:
 - hut
 - nodejs
+- esbuild
 oauth: pages.sr.ht/PAGES:RW
 tasks:
 - test: |
     cd requinto
     node --test
-- package: |
+- build: |
     cd requinto
-    tar -cvz --exclude='.git' --exclude='*.tar.gz' --exclude='.build.yml' --exclude='justfile' --exclude='node_modules' --exclude='package.json' --exclude='package-lock.json' --exclude='*.test.js' . > ../website.tar.gz
+    mkdir -p dist
+    esbuild script.js --bundle --minify --sourcemap --outfile=dist/bundle.js
+    esbuild style.css --bundle --minify --sourcemap --outfile=dist/bundle.css
+    sed 's/src="script.js"/src="bundle.js"/; s/href="style.css"/href="bundle.css"/' index.html > dist/index.html
+    cp LICENSE dist/LICENSE
+- package: |
+    cd requinto/dist
+    tar -cvz . > ../../website.tar.gz
 - upload: |
     hut pages publish --domain requinto.whereis.social website.tar.gz
