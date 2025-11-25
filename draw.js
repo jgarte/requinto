@@ -84,9 +84,9 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
   // String 2 (G): frets 0, 2, 4, 5
   // String 1 (C): frets 0, 2, 4, 5
   const naturalNotes = [
-    { string: 4, fret: 0 }, { string: 4, fret: 2 }, { string: 4, fret: 4 }, { string: 4, fret: 5 },
-    { string: 3, fret: 0 }, { string: 3, fret: 2 }, { string: 3, fret: 3 }, { string: 3, fret: 5 },
-    { string: 2, fret: 0 }, { string: 2, fret: 2 }, { string: 2, fret: 4 }, { string: 2, fret: 5 },
+    { string: 4, fret: 0 },
+    { string: 3, fret: 0 }, { string: 3, fret: 2 }, { string: 3, fret: 3 },
+    { string: 2, fret: 0 }, { string: 2, fret: 2 }, { string: 2, fret: 4 },
     { string: 1, fret: 0 }, { string: 1, fret: 2 }, { string: 1, fret: 4 }, { string: 1, fret: 5 }
   ];
 
