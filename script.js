@@ -19,78 +19,83 @@ let showingAnswer = false;
 const canvas = document.getElementById("fretboard");
 const ctx = canvas.getContext("2d");
 
-function drawFrets(padding, numFrets, fretSpacing) {
+function drawFrets(config) {
   // Draw frets (horizontal lines)
   ctx.strokeStyle = "#666";
   ctx.lineWidth = 2;
-  for (let i = 0; i <= numFrets; i++) {
-    const y = padding + i * fretSpacing;
+  for (let i = 0; i <= config.numFrets; i++) {
+    const y = config.padding + i * config.fretSpacing;
     ctx.beginPath();
-    ctx.moveTo(padding, y);
-    ctx.lineTo(canvas.width - padding, y);
+    ctx.moveTo(config.padding, y);
+    ctx.lineTo(canvas.width - config.padding, y);
     ctx.stroke();
   }
 }
 
-function drawNut(padding) {
+function drawNut(config) {
   // Draw nut (first fret thicker)
   ctx.lineWidth = 5;
   ctx.beginPath();
-  ctx.moveTo(padding, padding);
-  ctx.lineTo(canvas.width - padding, padding);
+  ctx.moveTo(config.padding, config.padding);
+  ctx.lineTo(canvas.width - config.padding, config.padding);
   ctx.stroke();
 }
 
-function drawStrings(padding, numStrings, stringSpacing) {
+function drawStrings(config) {
   // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
-  for (let i = 0; i < numStrings; i++) {
-    const x = padding + i * stringSpacing;
+  for (let i = 0; i < config.numStrings; i++) {
+    const x = config.padding + i * config.stringSpacing;
     ctx.beginPath();
-    ctx.moveTo(x, padding);
-    ctx.lineTo(x, canvas.height - padding);
+    ctx.moveTo(x, config.padding);
+    ctx.lineTo(x, canvas.height - config.padding);
     ctx.stroke();
   }
 }
 
-function drawStringNames(padding, numStrings, stringSpacing) {
+function drawStringNames(config) {
   // Draw string names
   ctx.fillStyle = "#999";
   ctx.textAlign = "center";
   const stringNames = ["C", "D", "G", "C"];
-  for (let i = 0; i < numStrings; i++) {
-    const x = padding + i * stringSpacing;
-    ctx.fillText(`${stringNames[i]}`, x, padding - 15);
+  for (let i = 0; i < config.numStrings; i++) {
+    const x = config.padding + i * config.stringSpacing;
+    ctx.fillText(`${stringNames[i]}`, x, config.padding - 15);
   }
 }
 
 function drawFretboard() {
-  const padding = 40;
-  const numStrings = 4;
-  const numFrets = 6;
-  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
-  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
+  const config = {
+    padding: 40,
+    numStrings: 4,
+    numFrets: 6,
+    stringSpacing: 0,
+    fretSpacing: 0
+  };
+
+  config.stringSpacing = (canvas.width - 2 * config.padding) / (config.numStrings - 1);
+  config.fretSpacing = (canvas.height - 2 * config.padding) / config.numFrets;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawFrets(padding, numFrets, fretSpacing);
-  drawNut(padding);
-  drawStrings(padding, numStrings, stringSpacing);
-  drawStringNames(padding, numStrings, stringSpacing);
+  drawFrets(config);
+  drawNut(config);
+  drawStrings(config);
+  drawStringNames(config);
 
   // Highlight current position
   if (currentNote) {
-    const stringIndex = numStrings - currentNote.string;
+    const stringIndex = config.numStrings - currentNote.string;
     const fretIndex = currentNote.fret;
 
     let x, y;
-    x = padding + stringIndex * stringSpacing;
+    x = config.padding + stringIndex * config.stringSpacing;
 
     if (fretIndex === 0) {
-      y = padding;
+      y = config.padding;
     } else {
-      y = padding + fretIndex * fretSpacing - fretSpacing / 2;
+      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
     }
 
     // Draw circle at position
