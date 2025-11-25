@@ -35,6 +35,11 @@ const notes = [
 
 let currentNote = null;
 let showingAnswer = false;
+let exploreMode = false; // Toggle to show all notes
+
+// Double-tap/click detection
+let lastTapTime = 0;
+const DOUBLE_TAP_DELAY = 300; // milliseconds
 
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
@@ -186,7 +191,17 @@ function getNotePosition(note) {
 
 // Handle canvas click/touch
 function handleCanvasClick(clientX, clientY) {
-  if (!currentNote) return;
+  const currentTime = Date.now();
+  const timeSinceLastTap = currentTime - lastTapTime;
+
+  // Check for double tap
+  if (timeSinceLastTap < DOUBLE_TAP_DELAY) {
+    toggleExploreMode();
+    lastTapTime = 0; // Reset to prevent triple-tap
+    return;
+  }
+
+  lastTapTime = currentTime;
 
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -194,17 +209,49 @@ function handleCanvasClick(clientX, clientY) {
   const clickX = (clientX - rect.left) * scaleX;
   const clickY = (clientY - rect.top) * scaleY;
 
-  const notePos = getNotePosition(currentNote);
-  const distance = Math.sqrt(
-    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
-  );
+  if (exploreMode) {
+    // In explore mode, check if any note was clicked
+    for (const note of notes) {
+      const notePos = getNotePosition(note);
+      const distance = Math.sqrt(
+        Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+      );
 
-  // If clicked within 20px of the note, show answer; otherwise next question
-  if (distance < 20) {
-    showAnswer();
+      if (distance < 20) {
+        const frequency = getNoteFrequency(note);
+        playNote(frequency);
+        return;
+      }
+    }
+  } else {
+    // Normal training mode
+    if (!currentNote) return;
+
+    const notePos = getNotePosition(currentNote);
+    const distance = Math.sqrt(
+      Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+    );
+
+    // If clicked within 20px of the note, show answer; otherwise next question
+    if (distance < 20) {
+      showAnswer();
+    } else {
+      nextQuestion();
+    }
+  }
+}
+
+function toggleExploreMode() {
+  exploreMode = !exploreMode;
+  if (exploreMode) {
+    drawExploreMode();
   } else {
     nextQuestion();
   }
+}
+
+function drawExploreMode() {
+  drawFretboard(ctx, canvas, null, false, notes);
 }
 
 // Add click/touch event listeners

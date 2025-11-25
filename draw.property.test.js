@@ -259,3 +259,40 @@ test('exhaustive: all 11 notes × 2 states = 22 cases', () => {
 
   assert.strictEqual(testCount, 22, 'Should have tested exactly 22 cases');
 });
+
+test('property: explore mode shows all notes with labels', () => {
+  const ctx = createMockContext();
+  const canvas = createMockCanvas();
+
+  drawFretboard(ctx, canvas, null, false, allValidNotes);
+
+  // Should have 11 arc calls (one per note)
+  const arcCalls = ctx.calls.filter(call => Array.isArray(call) && call[0] === 'arc');
+  // Plus natural note markers (11 natural notes in the array)
+  assert.ok(arcCalls.length >= 11, `Expected at least 11 arc calls, got ${arcCalls.length}`);
+
+  // Should have 11 fillText calls with note names
+  const noteLabelCalls = ctx.calls.filter(
+    call => Array.isArray(call) &&
+           call[0] === 'fillText' &&
+           allValidNotes.some(n => n.note === call[1])
+  );
+  assert.strictEqual(noteLabelCalls.length, 11, 'Should show all 11 note labels in explore mode');
+});
+
+test('property: explore mode and training mode are mutually exclusive', () => {
+  const ctx = createMockContext();
+  const canvas = createMockCanvas();
+  const singleNote = allValidNotes[0];
+
+  // Call with both currentNote and allNotes - allNotes should take precedence
+  drawFretboard(ctx, canvas, singleNote, false, allValidNotes);
+
+  // Should have note labels for all notes, not just one
+  const noteLabelCalls = ctx.calls.filter(
+    call => Array.isArray(call) &&
+           call[0] === 'fillText' &&
+           allValidNotes.some(n => n.note === call[1])
+  );
+  assert.strictEqual(noteLabelCalls.length, 11, 'Should show all notes when in explore mode');
+});

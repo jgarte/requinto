@@ -59,7 +59,7 @@ export function drawStringNames(ctx, canvas, config) {
   }
 }
 
-export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
+export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes = null) {
   const config = {
     padding: 40,
     numStrings: 4,
@@ -115,7 +115,36 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer) {
     }
   });
 
-  // Highlight current position
+  // Explore mode: show all notes
+  if (allNotes) {
+    allNotes.forEach(note => {
+      const stringIndex = config.numStrings - note.string;
+      const fretIndex = note.fret;
+
+      let x, y;
+      x = config.padding + stringIndex * config.stringSpacing;
+
+      if (fretIndex === 0) {
+        y = config.padding - 15;
+      } else {
+        y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+      }
+
+      // Draw circle at position with different color
+      ctx.fillStyle = "#4A90E2";
+      ctx.beginPath();
+      ctx.arc(x, y, 12, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Always show note name in explore mode
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 16px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(note.note, x, y + 5);
+    });
+  }
+
+  // Highlight current position (training mode)
   if (currentNote) {
     const stringIndex = config.numStrings - currentNote.string;
     const fretIndex = currentNote.fret;
