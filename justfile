@@ -5,3 +5,6 @@ serve:
 # Run all the unit tests.
 test:
     node --test
+
+format:
+    npx prettier --write *.js
