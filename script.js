@@ -133,97 +133,54 @@ function playNote(frequency) {
 
 const songs = [
   {
-    name: "escala mayor",
-    notes: notes.map(n => ({ note: n, duration: 1 }))
-  },
-  {
-    name: "colas",
+    name: "balajú",
     notes: [
       { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
       { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
       { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
       { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 1, fret: 4, note: "E" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
       { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
       { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-
       { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
       { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
       { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
       { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 1, fret: 4, note: "E" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
+      { note: { string: 3, fret: 0, note: "D" }, duration: 1 },
+      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
+      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
+      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
+      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
+      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
       { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
       { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
       { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
       { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 5, note: "F" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 5, note: "F" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-
-      // TODO: Refactor this repeat.
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 5, note: "F" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 5, note: "F" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 }
-
+      { note: { string: 3, fret: 0, note: "D" }, duration: 1 },
+      { note: { string: 4, fret: 0, note: "C" }, duration: 1 }
     ]
   }
 ];
@@ -252,7 +209,7 @@ function playScale(song = songs[0]) {
     playNote(frequency);
     index++;
 
-    currentTimeout = setTimeout(playNext, duration * 500);
+    currentTimeout = setTimeout(playNext, duration * 400);
   }
 
   playNext();
