@@ -203,7 +203,7 @@ function playScale(song = songs[0]) {
 
     const { note, duration } = song.notes[index];
     playingNote = note;
-    drawFretboard(ctx, canvas, currentNote, showingAnswer, null, playingNote);
+    drawFretboard(ctx, canvas, null, false, null, playingNote);
 
     const frequency = getNoteFrequency(note);
     playNote(frequency);
