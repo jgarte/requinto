@@ -1,4 +1,4 @@
-// Requinto Note Trainer
+// requinto
 // Copyright (C) 2025 jgart
 //
 // This program is free software: you can redistribute it and/or modify

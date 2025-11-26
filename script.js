@@ -1,4 +1,4 @@
-// Requinto Note Trainer
+// requinto
 // Copyright (C) 2025 jgart
 //
 // This program is free software: you can redistribute it and/or modify
@@ -281,7 +281,7 @@ const hintElement = document.getElementById('hint');
 let isSpanish = true; // Default to Spanish
 
 const translations = {
-  es: 'toca la nota para enseñarla · toca el diapasón para ir a la siguiente',
+  es: 'toca la nota para mostrarla · toca el diapasón para ir a la siguiente nota',
   en: 'tap the note to show it · tap the board to go to the next note'
 };
 
