@@ -59,17 +59,25 @@ export function drawStringNames(ctx, canvas, config) {
   }
 }
 
-export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes = null, playingNote = null) {
+export function drawFretboard(
+  ctx,
+  canvas,
+  currentNote,
+  showingAnswer,
+  allNotes = null,
+  playingNote = null,
+) {
   const config = {
     padding: 40,
     numStrings: 4,
     numFrets: 5,
     stringNames: ["C", "D", "G", "C"],
     stringSpacing: 0,
-    fretSpacing: 0
+    fretSpacing: 0,
   };
 
-  config.stringSpacing = (canvas.width - 2 * config.padding) / (config.numStrings - 1);
+  config.stringSpacing =
+    (canvas.width - 2 * config.padding) / (config.numStrings - 1);
   config.fretSpacing = (canvas.height - 2 * config.padding) / config.numFrets;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -84,13 +92,21 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
   // String 2 (G): frets 0, 2, 4
   // String 1 (C): frets 0, 2, 4, 5
   const naturalNotes = [
-    { string: 4, fret: 0 }, { string: 4, fret: 2 },
-    { string: 3, fret: 0 }, { string: 3, fret: 2 }, { string: 3, fret: 3 },
-    { string: 2, fret: 0 }, { string: 2, fret: 2 }, { string: 2, fret: 4 },
-    { string: 1, fret: 0 }, { string: 1, fret: 2 }, { string: 1, fret: 4 }, { string: 1, fret: 5 }
+    { string: 4, fret: 0 },
+    { string: 4, fret: 2 },
+    { string: 3, fret: 0 },
+    { string: 3, fret: 2 },
+    { string: 3, fret: 3 },
+    { string: 2, fret: 0 },
+    { string: 2, fret: 2 },
+    { string: 2, fret: 4 },
+    { string: 1, fret: 0 },
+    { string: 1, fret: 2 },
+    { string: 1, fret: 4 },
+    { string: 1, fret: 5 },
   ];
 
-  naturalNotes.forEach(note => {
+  naturalNotes.forEach((note) => {
     const stringIndex = config.numStrings - note.string;
     const fretIndex = note.fret;
 
@@ -107,7 +123,10 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
       ctx.stroke();
     } else {
       // Fretted notes (filled circles)
-      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+      y =
+        config.padding +
+        fretIndex * config.fretSpacing -
+        config.fretSpacing / 2;
       ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
       ctx.beginPath();
       ctx.arc(x, y, 8, 0, 2 * Math.PI);
@@ -117,7 +136,7 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
 
   // Explore mode: show all notes
   if (allNotes) {
-    allNotes.forEach(note => {
+    allNotes.forEach((note) => {
       const stringIndex = config.numStrings - note.string;
       const fretIndex = note.fret;
 
@@ -127,7 +146,10 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
       if (fretIndex === 0) {
         y = config.padding - 15;
       } else {
-        y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+        y =
+          config.padding +
+          fretIndex * config.fretSpacing -
+          config.fretSpacing / 2;
       }
 
       // Draw circle at position with different color
@@ -155,7 +177,10 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
     if (fretIndex === 0) {
       y = config.padding - 15;
     } else {
-      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+      y =
+        config.padding +
+        fretIndex * config.fretSpacing -
+        config.fretSpacing / 2;
     }
 
     // Draw circle at position
@@ -184,7 +209,10 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
     if (fretIndex === 0) {
       y = config.padding - 15;
     } else {
-      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+      y =
+        config.padding +
+        fretIndex * config.fretSpacing -
+        config.fretSpacing / 2;
     }
 
     // Draw circle at position with green color

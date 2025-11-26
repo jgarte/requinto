@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { drawFretboard } from './draw.js';
-import { songs } from './songs.js';
+import { drawFretboard } from "./draw.js";
+import { songs } from "./songs.js";
 
 const notes = [
   { string: 4, fret: 0, note: "C" },
@@ -32,7 +32,7 @@ const notes = [
   { string: 1, fret: 0, note: "C" },
   { string: 1, fret: 2, note: "D" },
   { string: 1, fret: 4, note: "E" },
-  { string: 1, fret: 5, note: "F" }
+  { string: 1, fret: 5, note: "F" },
 ];
 
 let currentNote = null;
@@ -53,7 +53,7 @@ let isPlayingScale = false;
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
 notes.forEach((note, index) => {
-  noteHistory.set(index, Date.now() - (index * 1000)); // Stagger initial times
+  noteHistory.set(index, Date.now() - index * 1000); // Stagger initial times
 });
 
 const canvas = document.getElementById("fretboard");
@@ -66,8 +66,8 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const openStringFrequencies = {
   4: 130.81, // C3
   3: 146.83, // D3
-  2: 196.00, // G3
-  1: 261.63  // C4
+  2: 196.0, // G3
+  1: 261.63, // C4
 };
 
 function getNoteFrequency(note) {
@@ -82,7 +82,7 @@ function playNote(frequency) {
 
   // Create a low-pass filter to simulate body resonance
   const filter = audioContext.createBiquadFilter();
-  filter.type = 'lowpass';
+  filter.type = "lowpass";
   filter.frequency.setValueAtTime(3000, now);
   filter.Q.setValueAtTime(1, now);
 
@@ -96,27 +96,27 @@ function playNote(frequency) {
 
   // Create harmonics for richer sound (fundamental + overtones)
   const harmonics = [
-    { freq: frequency, gain: 0.4 },        // Fundamental
-    { freq: frequency * 2, gain: 0.3 },    // 2nd harmonic
-    { freq: frequency * 3, gain: 0.15 },   // 3rd harmonic
-    { freq: frequency * 4, gain: 0.08 },   // 4th harmonic
-    { freq: frequency * 5, gain: 0.04 },   // 5th harmonic
-    { freq: frequency * 6, gain: 0.02 }    // 6th harmonic
+    { freq: frequency, gain: 0.4 }, // Fundamental
+    { freq: frequency * 2, gain: 0.3 }, // 2nd harmonic
+    { freq: frequency * 3, gain: 0.15 }, // 3rd harmonic
+    { freq: frequency * 4, gain: 0.08 }, // 4th harmonic
+    { freq: frequency * 5, gain: 0.04 }, // 5th harmonic
+    { freq: frequency * 6, gain: 0.02 }, // 6th harmonic
   ];
 
   harmonics.forEach((harmonic, index) => {
     const osc = audioContext.createOscillator();
-    osc.type = 'sine';
+    osc.type = "sine";
     osc.frequency.setValueAtTime(harmonic.freq, now);
 
     const harmonicGain = audioContext.createGain();
     harmonicGain.gain.setValueAtTime(harmonic.gain, now);
 
     // Higher harmonics decay faster (nylon string characteristic)
-    const decayRate = 1 + (index * 0.3);
+    const decayRate = 1 + index * 0.3;
     harmonicGain.gain.exponentialRampToValueAtTime(
       harmonic.gain * 0.01,
-      now + duration / decayRate
+      now + duration / decayRate,
     );
 
     osc.connect(harmonicGain);
@@ -258,7 +258,7 @@ function handleCanvasClick(clientX, clientY) {
     for (const note of notes) {
       const notePos = getNotePosition(note);
       const distance = Math.sqrt(
-        Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+        Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
       );
 
       if (distance < 20) {
@@ -273,7 +273,7 @@ function handleCanvasClick(clientX, clientY) {
 
     const notePos = getNotePosition(currentNote);
     const distance = Math.sqrt(
-      Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+      Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
     );
 
     // Delay the action to allow double-tap detection
@@ -303,13 +303,13 @@ function drawExploreMode() {
 }
 
 // Add click/touch event listeners
-canvas.addEventListener('mousedown', () => {
+canvas.addEventListener("mousedown", () => {
   longPressTimeout = setTimeout(() => {
     playScale();
   }, LONG_PRESS_DELAY);
 });
 
-canvas.addEventListener('mouseup', (e) => {
+canvas.addEventListener("mouseup", (e) => {
   if (longPressTimeout) {
     clearTimeout(longPressTimeout);
     longPressTimeout = null;
@@ -317,14 +317,14 @@ canvas.addEventListener('mouseup', (e) => {
   }
 });
 
-canvas.addEventListener('touchstart', (e) => {
+canvas.addEventListener("touchstart", (e) => {
   e.preventDefault();
   longPressTimeout = setTimeout(() => {
     playScale();
   }, LONG_PRESS_DELAY);
 });
 
-canvas.addEventListener('touchend', (e) => {
+canvas.addEventListener("touchend", (e) => {
   e.preventDefault();
   if (longPressTimeout) {
     clearTimeout(longPressTimeout);
@@ -335,20 +335,20 @@ canvas.addEventListener('touchend', (e) => {
 });
 
 // Language toggle for hint text
-const hintElement = document.getElementById('hint');
+const hintElement = document.getElementById("hint");
 let isSpanish = true; // Default to Spanish
 
 const translations = {
-  es: 'toca la nota para mostrarla · toca el diapasón para ir a la siguiente nota',
-  en: 'tap the note to show it · tap the board to go to the next note'
+  es: "toca la nota para mostrarla · toca el diapasón para ir a la siguiente nota",
+  en: "tap the note to show it · tap the board to go to the next note",
 };
 
-hintElement.addEventListener('click', () => {
+hintElement.addEventListener("click", () => {
   isSpanish = !isSpanish;
   hintElement.textContent = isSpanish ? translations.es : translations.en;
 });
 
-hintElement.addEventListener('touchend', (e) => {
+hintElement.addEventListener("touchend", (e) => {
   e.preventDefault();
   isSpanish = !isSpanish;
   hintElement.textContent = isSpanish ? translations.es : translations.en;

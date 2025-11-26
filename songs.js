@@ -64,7 +64,7 @@ export const songs = [
       { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
       { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
       { note: { string: 3, fret: 0, note: "D" }, duration: 1 },
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 }
-    ]
-  }
+      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
+    ],
+  },
 ];
