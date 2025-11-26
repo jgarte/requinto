@@ -59,7 +59,7 @@ export function drawStringNames(ctx, canvas, config) {
   }
 }
 
-export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes = null) {
+export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes = null, playingNote = null) {
   const config = {
     padding: 40,
     numStrings: 4,
@@ -171,5 +171,32 @@ export function drawFretboard(ctx, canvas, currentNote, showingAnswer, allNotes 
       ctx.textAlign = "center";
       ctx.fillText(currentNote.note, x, y + 5);
     }
+  }
+
+  // Highlight currently playing note (during song playback)
+  if (playingNote) {
+    const stringIndex = config.numStrings - playingNote.string;
+    const fretIndex = playingNote.fret;
+
+    let x, y;
+    x = config.padding + stringIndex * config.stringSpacing;
+
+    if (fretIndex === 0) {
+      y = config.padding - 15;
+    } else {
+      y = config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
+    }
+
+    // Draw circle at position with green color
+    ctx.fillStyle = "#4CAF50";
+    ctx.beginPath();
+    ctx.arc(x, y, 12, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Show note name
+    ctx.fillStyle = "#FFF";
+    ctx.font = "bold 16px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(playingNote.note, x, y + 5);
   }
 }
