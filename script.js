@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { drawFretboard } from './draw.js';
+import { songs } from './songs.js';
 
 const notes = [
   { string: 4, fret: 0, note: "C" },
@@ -48,7 +49,6 @@ let singleTapTimeout = null;
 let longPressTimeout = null;
 const LONG_PRESS_DELAY = 500; // milliseconds
 let isPlayingScale = false;
-let currentSongIndex = 0;
 
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
@@ -130,60 +130,6 @@ function playNote(frequency) {
   filter.connect(masterGain);
   masterGain.connect(audioContext.destination);
 }
-
-const songs = [
-  {
-    name: "",
-    notes: [
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 1, fret: 4, note: "E" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 1, fret: 4, note: "E" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 3, fret: 0, note: "D" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 2, note: "D" }, duration: 1 },
-      { note: { string: 1, fret: 0, note: "C" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 2, fret: 4, note: "B" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 2, fret: 2, note: "A" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
-      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 3, fret: 3, note: "F" }, duration: 1 },
-      { note: { string: 3, fret: 0, note: "D" }, duration: 1 },
-      { note: { string: 4, fret: 0, note: "C" }, duration: 1 }
-    ]
-  }
-];
 
 function playScale(song = songs[0]) {
   if (isPlayingScale) return;
@@ -359,7 +305,7 @@ function drawExploreMode() {
 // Add click/touch event listeners
 canvas.addEventListener('mousedown', () => {
   longPressTimeout = setTimeout(() => {
-    playScale(songs[currentSongIndex]);
+    playScale();
   }, LONG_PRESS_DELAY);
 });
 
@@ -374,7 +320,7 @@ canvas.addEventListener('mouseup', (e) => {
 canvas.addEventListener('touchstart', (e) => {
   e.preventDefault();
   longPressTimeout = setTimeout(() => {
-    playScale(songs[currentSongIndex]);
+    playScale();
   }, LONG_PRESS_DELAY);
 });
 
@@ -408,23 +354,4 @@ hintElement.addEventListener('touchend', (e) => {
   hintElement.textContent = isSpanish ? translations.es : translations.en;
 });
 
-// Song selector
-const songElement = document.getElementById('song');
-
-function updateSongDisplay() {
-  songElement.textContent = songs[currentSongIndex].name;
-}
-
-songElement.addEventListener('click', () => {
-  currentSongIndex = (currentSongIndex + 1) % songs.length;
-  updateSongDisplay();
-});
-
-songElement.addEventListener('touchend', (e) => {
-  e.preventDefault();
-  currentSongIndex = (currentSongIndex + 1) % songs.length;
-  updateSongDisplay();
-});
-
-updateSongDisplay();
 nextQuestion();
