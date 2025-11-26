@@ -43,6 +43,11 @@ let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 200; // milliseconds
 let singleTapTimeout = null;
 
+// Long press detection for scale playback
+let longPressTimeout = null;
+const LONG_PRESS_DELAY = 500; // milliseconds
+let isPlayingScale = false;
+
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
 notes.forEach((note, index) => {
@@ -122,6 +127,26 @@ function playNote(frequency) {
   // Connect filter to master gain to output
   filter.connect(masterGain);
   masterGain.connect(audioContext.destination);
+}
+
+// TODO: Make an array of objects called songs that has notes and rhythms. Add mary had a little lamb to that array.
+function playScale(songs) {
+  if (isPlayingScale) return;
+  isPlayingScale = true;
+  longPressTimeout = null;
+
+  let index = 0;
+  const interval = setInterval(() => {
+    if (index >= notes.length) {
+      clearInterval(interval);
+      isPlayingScale = false;
+      return;
+    }
+
+    const frequency = getNoteFrequency(notes[index]);
+    playNote(frequency);
+    index++;
+  }, 1000); // 60 BPM = 1 second per quarter note
 }
 
 function selectNextNote() {
@@ -266,14 +291,35 @@ function drawExploreMode() {
 }
 
 // Add click/touch event listeners
-canvas.addEventListener('click', (e) => {
-  handleCanvasClick(e.clientX, e.clientY);
+canvas.addEventListener('mousedown', () => {
+  longPressTimeout = setTimeout(() => {
+    playScale();
+  }, LONG_PRESS_DELAY);
+});
+
+canvas.addEventListener('mouseup', (e) => {
+  if (longPressTimeout) {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
+    handleCanvasClick(e.clientX, e.clientY);
+  }
+});
+
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  longPressTimeout = setTimeout(() => {
+    playScale();
+  }, LONG_PRESS_DELAY);
 });
 
 canvas.addEventListener('touchend', (e) => {
   e.preventDefault();
-  const touch = e.changedTouches[0];
-  handleCanvasClick(touch.clientX, touch.clientY);
+  if (longPressTimeout) {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
+    const touch = e.changedTouches[0];
+    handleCanvasClick(touch.clientX, touch.clientY);
+  }
 });
 
 // Language toggle for hint text
