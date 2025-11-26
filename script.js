@@ -133,7 +133,7 @@ function playNote(frequency) {
 
 const songs = [
   {
-    name: "balajú",
+    name: "",
     notes: [
       { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
       { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
