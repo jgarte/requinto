@@ -1,7 +1,7 @@
-# Run local development server
+# Run the local development server. I installed this from nixpkgs.
 serve:
-    python3 -m http.server 8000
+    live-server --port=8000 --no-browser
 
-# Run unit tests
+# Run all the unit tests.
 test:
     node --test
