@@ -47,6 +47,7 @@ let singleTapTimeout = null;
 let longPressTimeout = null;
 const LONG_PRESS_DELAY = 500; // milliseconds
 let isPlayingScale = false;
+let currentSongIndex = 0;
 
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
@@ -129,24 +130,54 @@ function playNote(frequency) {
   masterGain.connect(audioContext.destination);
 }
 
-// TODO: Make an array of objects called songs that has notes and rhythms. Add mary had a little lamb to that array.
-function playScale(songs) {
+const songs = [
+  {
+    name: "Scale",
+    notes: notes.map(n => ({ note: n, duration: 1 }))
+  },
+  {
+    name: "Mary Had a Little Lamb",
+    notes: [
+      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
+      { note: { string: 4, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
+      { note: { string: 4, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
+      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
+      { note: { string: 3, fret: 2, note: "E" }, duration: 2 },
+      { note: { string: 4, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 4, fret: 2, note: "D" }, duration: 1 },
+      { note: { string: 4, fret: 2, note: "D" }, duration: 2 },
+      { note: { string: 3, fret: 2, note: "E" }, duration: 1 },
+      { note: { string: 2, fret: 0, note: "G" }, duration: 1 },
+      { note: { string: 2, fret: 0, note: "G" }, duration: 2 }
+    ]
+  }
+];
+
+function playScale(song = songs[0]) {
   if (isPlayingScale) return;
   isPlayingScale = true;
   longPressTimeout = null;
 
   let index = 0;
-  const interval = setInterval(() => {
-    if (index >= notes.length) {
-      clearInterval(interval);
+  let currentTimeout;
+
+  function playNext() {
+    if (index >= song.notes.length) {
       isPlayingScale = false;
       return;
     }
 
-    const frequency = getNoteFrequency(notes[index]);
+    const { note, duration } = song.notes[index];
+    const frequency = getNoteFrequency(note);
     playNote(frequency);
     index++;
-  }, 1000); // 60 BPM = 1 second per quarter note
+
+    currentTimeout = setTimeout(playNext, duration * 1000);
+  }
+
+  playNext();
 }
 
 function selectNextNote() {
@@ -293,7 +324,7 @@ function drawExploreMode() {
 // Add click/touch event listeners
 canvas.addEventListener('mousedown', () => {
   longPressTimeout = setTimeout(() => {
-    playScale();
+    playScale(songs[currentSongIndex]);
   }, LONG_PRESS_DELAY);
 });
 
@@ -308,7 +339,7 @@ canvas.addEventListener('mouseup', (e) => {
 canvas.addEventListener('touchstart', (e) => {
   e.preventDefault();
   longPressTimeout = setTimeout(() => {
-    playScale();
+    playScale(songs[currentSongIndex]);
   }, LONG_PRESS_DELAY);
 });
 
@@ -342,4 +373,23 @@ hintElement.addEventListener('touchend', (e) => {
   hintElement.textContent = isSpanish ? translations.es : translations.en;
 });
 
+// Song selector
+const songElement = document.getElementById('song');
+
+function updateSongDisplay() {
+  songElement.textContent = `hold: ${songs[currentSongIndex].name}`;
+}
+
+songElement.addEventListener('click', () => {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  updateSongDisplay();
+});
+
+songElement.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  updateSongDisplay();
+});
+
+updateSongDisplay();
 nextQuestion();
