@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 export const songs = [
+  // Balajú
+  // Performer: Ulises Gonzales
   {
     notes: [
       { note: { string: 4, fret: 0, note: "C" }, duration: 1 },
