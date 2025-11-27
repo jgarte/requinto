@@ -7,7 +7,7 @@ import {
   drawNut,
   drawStrings,
   drawStringNames,
-} from "./draw.js";
+} from "./src/draw.js";
 
 // Mock canvas context that tracks calls
 function createMockContext() {

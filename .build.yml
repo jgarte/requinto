@@ -13,9 +13,9 @@ tasks:
 - build: |
     cd requinto
     mkdir -p dist
-    esbuild script.js --bundle --minify --sourcemap --outfile=dist/bundle.js
-    esbuild style.css --bundle --minify --sourcemap --outfile=dist/bundle.css
-    sed 's/src="script.js"/src="bundle.js"/; s/href="style.css"/href="bundle.css"/' index.html > dist/index.html
+    esbuild src/script.js --bundle --minify --sourcemap --outfile=dist/bundle.js
+    esbuild src/style.css --bundle --minify --sourcemap --outfile=dist/bundle.css
+    sed 's/src="script.js"/src="bundle.js"/; s/href="style.css"/href="bundle.css"/' src/index.html > dist/index.html
     cp LICENSE dist/LICENSE
 - package: |
     cd requinto/dist
