@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Requinto
+Comment=Interactive requinto fretboard trainer
+Exec=requinto
+Icon=social.whereis.requinto
+Terminal=false
+Categories=AudioVideo;Education;Music;
+StartupNotify=true
