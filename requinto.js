@@ -26,9 +26,6 @@ if (!indexGFile.query_exists(null)) {
 
 const indexURI = indexGFile.get_uri();
 
-// ------------------------------------------------------------
-// GTK + WebKit App
-// ------------------------------------------------------------
 const app = new Gtk.Application({
   application_id: "social.whereis.requinto"
 });
@@ -43,7 +40,6 @@ app.connect("activate", () => {
 
   const webview = new WebKit.WebView();
 
-  // ✅ THIS IS THE CRITICAL FIX
   const settings = webview.get_settings();
   settings.enable_developer_extras = true;
   settings.allow_file_access_from_file_urls = true;
