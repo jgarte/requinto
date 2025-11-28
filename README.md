@@ -29,6 +29,14 @@ remember it
 
 - detect language and set app instructions accordingly?
 
+- Create flatpak/icon/social.whereis.requinto.svg
+
+- add more requinto tangeos
+
+- add more requinto melodies
+
+- decide on a ui for selecting various tangeos, melodies, etc.
+
 ## license
 
 agpl-3.0-or-later
