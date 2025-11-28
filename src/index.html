@@ -18,19 +18,30 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>requinto</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+
+  <!-- ✅ CRITICAL FIX: PREVENT ROOT FILESYSTEM FALLBACK -->
+  <base href="./">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>requinto</title>
+
+  <!-- ✅ RELATIVE ASSETS (already correct, kept as-is) -->
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<canvas id="fretboard" width="300" height="500"></canvas>
+  <canvas id="fretboard" width="300" height="500"></canvas>
 
-<p id="hint" class="hint">toca la nota para mostrarla · toca el diapasón para ir a la siguiente nota</p>
-<p id="song" class="hint"></p>
+  <p id="hint" class="hint">
+    toca la nota para mostrarla · toca el diapasón para ir a la siguiente nota
+  </p>
 
-<script type="module" src="script.js"></script>
+  <p id="song" class="hint"></p>
+
+  <!-- ✅ MODULE SCRIPT, RELATIVE -->
+  <script type="module" src="script.js"></script>
 
 </body>
 </html>

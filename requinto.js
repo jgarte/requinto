@@ -6,38 +6,39 @@ imports.gi.versions.WebKit = "6.0";
 const { Gtk, Gio, GLib, WebKit } = imports.gi;
 
 // ------------------------------------------------------------
-// App Paths
+// ✅ SCRIPT-ANCHORED PATH (NOT CWD)
 // ------------------------------------------------------------
-const APP_DIR = GLib.get_current_dir();
-const PORT = 38423;
-const URL = `http://127.0.0.1:${PORT}/`;
+
+const scriptFile = Gio.File.new_for_path(
+  imports.system.programInvocationName
+);
+
+const projectRoot = scriptFile.get_parent().get_path();
+const indexFile = GLib.build_filenamev([projectRoot, "src", "index.html"]);
+const indexGFile = Gio.File.new_for_path(indexFile);
 
 // ------------------------------------------------------------
-// Spawn Local HTTP Server (CORRECT WAY)
+// ✅ HARD FAIL IF FILE IS MISSING
 // ------------------------------------------------------------
-const launcher = new Gio.SubprocessLauncher({
-  flags: Gio.SubprocessFlags.STDOUT_SILENCE |
-         Gio.SubprocessFlags.STDERR_SILENCE
-});
 
-launcher.set_cwd(APP_DIR);
+if (!indexGFile.query_exists(null)) {
+  printerr("PROJECT_ROOT:", projectRoot);
+  printerr("INDEX_FILE:", indexFile);
+  throw new Error("index.html NOT FOUND");
+}
 
-const server = launcher.spawnv([
-  "python3",
-  "-m",
-  "http.server",
-  `${PORT}`
-]);
+// ------------------------------------------------------------
+// ✅ CONVERT FILE → URI SAFELY
+// ------------------------------------------------------------
 
-// Give the server time to start
-GLib.usleep(300_000);
+const indexURI = indexGFile.get_uri();
 
 // ------------------------------------------------------------
 // GTK + WebKit App
 // ------------------------------------------------------------
+
 const app = new Gtk.Application({
-  application_id: "social.whereis.requinto",
-  flags: Gio.ApplicationFlags.FLAGS_NONE
+  application_id: "social.whereis.requinto"
 });
 
 app.connect("activate", () => {
@@ -49,21 +50,12 @@ app.connect("activate", () => {
   });
 
   const webview = new WebKit.WebView();
-  const settings = webview.get_settings();
 
-  settings.enable_javascript = true;
-  settings.enable_developer_extras = true;
-
-  webview.load_uri(URL);
+  // ✅ UNIVERSAL API — NO DIRECTORY FALLBACK POSSIBLE
+  webview.load_uri(indexURI);
 
   win.set_child(webview);
   win.present();
-
-  // Clean shutdown of server
-  win.connect("close-request", () => {
-    server.force_exit();
-    return false;
-  });
 });
 
 app.run([]);
