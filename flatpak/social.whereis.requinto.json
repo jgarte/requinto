@@ -1,0 +1,35 @@
+{
+  "app-id": "social.whereis.requinto",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "46",
+  "sdk": "org.gnome.Sdk",
+  "command": "requinto",
+  "finish-args": [
+    "--socket=wayland",
+    "--socket=x11",
+    "--device=dri",
+    "--socket=pulseaudio",
+    "--share=ipc"
+  ],
+  "modules": [
+    {
+      "name": "requinto",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 requinto.js /app/bin/requinto",
+        "install -Dm644 src/index.html /app/share/requinto/src/index.html",
+        "install -Dm644 src/script.js /app/share/requinto/src/script.js",
+        "install -Dm644 src/draw.js /app/share/requinto/src/draw.js",
+        "install -Dm644 src/songs.js /app/share/requinto/src/songs.js",
+        "install -Dm644 src/style.css /app/share/requinto/src/style.css"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": ".."
+        }
+      ]
+    }
+  ]
+}
+

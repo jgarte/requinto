@@ -8,3 +8,9 @@ test:
 
 format:
     npx prettier --write *.js
+
+build:
+    flatpak-builder --user --install --force-clean build flatpak/social.whereis.requinto.json
+
+install:
+    flatpak run social.whereis.requinto

@@ -12,8 +12,12 @@ const scriptFile = Gio.File.new_for_path(
   imports.system.programInvocationName
 );
 
-const projectRoot = scriptFile.get_parent().get_path();
-const indexFile = GLib.build_filenamev([projectRoot, "src", "index.html"]);
+const projectRoot = "/app/share/requinto";
+const indexFile = GLib.build_filenamev([
+  "/app/share/requinto",
+  "src",
+  "index.html"
+]);
 const indexGFile = Gio.File.new_for_path(indexFile);
 
 if (!indexGFile.query_exists(null)) {
