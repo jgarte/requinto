@@ -6,9 +6,8 @@ imports.gi.versions.WebKit = "6.0";
 const { Gtk, Gio, GLib, WebKit } = imports.gi;
 
 // ------------------------------------------------------------
-// ✅ SCRIPT-ANCHORED PATH (NOT CWD)
+// Script-anchored index.html
 // ------------------------------------------------------------
-
 const scriptFile = Gio.File.new_for_path(
   imports.system.programInvocationName
 );
@@ -17,26 +16,15 @@ const projectRoot = scriptFile.get_parent().get_path();
 const indexFile = GLib.build_filenamev([projectRoot, "src", "index.html"]);
 const indexGFile = Gio.File.new_for_path(indexFile);
 
-// ------------------------------------------------------------
-// ✅ HARD FAIL IF FILE IS MISSING
-// ------------------------------------------------------------
-
 if (!indexGFile.query_exists(null)) {
-  printerr("PROJECT_ROOT:", projectRoot);
-  printerr("INDEX_FILE:", indexFile);
-  throw new Error("index.html NOT FOUND");
+  throw new Error(`index.html NOT FOUND at: ${indexFile}`);
 }
-
-// ------------------------------------------------------------
-// ✅ CONVERT FILE → URI SAFELY
-// ------------------------------------------------------------
 
 const indexURI = indexGFile.get_uri();
 
 // ------------------------------------------------------------
 // GTK + WebKit App
 // ------------------------------------------------------------
-
 const app = new Gtk.Application({
   application_id: "social.whereis.requinto"
 });
@@ -51,7 +39,12 @@ app.connect("activate", () => {
 
   const webview = new WebKit.WebView();
 
-  // ✅ UNIVERSAL API — NO DIRECTORY FALLBACK POSSIBLE
+  // ✅ THIS IS THE CRITICAL FIX
+  const settings = webview.get_settings();
+  settings.enable_developer_extras = true;
+  settings.allow_file_access_from_file_urls = true;
+  settings.allow_universal_access_from_file_urls = true;
+
   webview.load_uri(indexURI);
 
   win.set_child(webview);
@@ -59,4 +52,3 @@ app.connect("activate", () => {
 });
 
 app.run([]);
-
