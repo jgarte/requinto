@@ -1,6 +1,10 @@
-# Run the local development server. I installed this from nixpkgs.
+# Run the local development server (Python's built-in, no extra install).
 serve:
-    live-server --port=8000 --no-browser
+    python3 -m http.server 8000 --directory src
+
+# Run the global practice counter backend.
+serve-api:
+    node server.js
 
 # Run all the unit tests.
 test:
