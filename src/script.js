@@ -56,6 +56,29 @@ notes.forEach((note, index) => {
   noteHistory.set(index, Date.now() - index * 1000); // Stagger initial times
 });
 
+// Global practice counter backend (see server.js). Defaults to the local
+// dev server; point this at your deployed endpoint in production.
+const COUNTER_API = "http://localhost:8787";
+const countElement = document.getElementById("count");
+
+function renderCount(value) {
+  countElement.textContent = `${value} notas practicadas`;
+}
+
+// Read the current global count on load; stay silent if the backend is down.
+fetch(COUNTER_API)
+  .then((res) => res.json())
+  .then(({ value }) => renderCount(value))
+  .catch(() => {});
+
+// Record one practiced note and show the updated global count.
+function recordPractice() {
+  fetch(COUNTER_API, { method: "POST" })
+    .then((res) => res.json())
+    .then(({ value }) => renderCount(value))
+    .catch(() => {});
+}
+
 const canvas = document.getElementById("fretboard");
 const ctx = canvas.getContext("2d");
 
@@ -203,6 +226,9 @@ function showAnswer() {
   // Play the note
   const frequency = getNoteFrequency(currentNote);
   playNote(frequency);
+
+  // Count this as one practiced note in the global tally.
+  recordPractice();
 }
 
 // Calculate note position on canvas
