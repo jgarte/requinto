@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { drawFretboard } from "./draw.js";
-import { songs } from "./songs.js";
 
 const notes = [
   { string: 4, fret: 0, note: "C" },
@@ -38,17 +37,11 @@ const notes = [
 let currentNote = null;
 let showingAnswer = false;
 let exploreMode = false; // Toggle to show all notes
-let playingNote = null;
 
 // Double-tap/click detection
 let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 200; // milliseconds
 let singleTapTimeout = null;
-
-// Long press detection for scale playback
-let longPressTimeout = null;
-const LONG_PRESS_DELAY = 500; // milliseconds
-let isPlayingScale = false;
 
 // Spaced repetition: track when each note was last shown
 const noteHistory = new Map();
@@ -152,36 +145,6 @@ function playNote(frequency) {
   // Connect filter to master gain to output
   filter.connect(masterGain);
   masterGain.connect(audioContext.destination);
-}
-
-function playScale(song = songs[0]) {
-  if (isPlayingScale) return;
-  isPlayingScale = true;
-  longPressTimeout = null;
-
-  let index = 0;
-  let currentTimeout;
-
-  function playNext() {
-    if (index >= song.notes.length) {
-      isPlayingScale = false;
-      playingNote = null;
-      drawFretboard(ctx, canvas, currentNote, showingAnswer);
-      return;
-    }
-
-    const { note, duration } = song.notes[index];
-    playingNote = note;
-    drawFretboard(ctx, canvas, null, false, null, playingNote);
-
-    const frequency = getNoteFrequency(note);
-    playNote(frequency);
-    index++;
-
-    currentTimeout = setTimeout(playNext, duration * 400);
-  }
-
-  playNext();
 }
 
 function selectNextNote() {
@@ -329,35 +292,14 @@ function drawExploreMode() {
 }
 
 // Add click/touch event listeners
-canvas.addEventListener("mousedown", () => {
-  longPressTimeout = setTimeout(() => {
-    playScale();
-  }, LONG_PRESS_DELAY);
-});
-
-canvas.addEventListener("mouseup", (e) => {
-  if (longPressTimeout) {
-    clearTimeout(longPressTimeout);
-    longPressTimeout = null;
-    handleCanvasClick(e.clientX, e.clientY);
-  }
-});
-
-canvas.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  longPressTimeout = setTimeout(() => {
-    playScale();
-  }, LONG_PRESS_DELAY);
+canvas.addEventListener("click", (e) => {
+  handleCanvasClick(e.clientX, e.clientY);
 });
 
 canvas.addEventListener("touchend", (e) => {
   e.preventDefault();
-  if (longPressTimeout) {
-    clearTimeout(longPressTimeout);
-    longPressTimeout = null;
-    const touch = e.changedTouches[0];
-    handleCanvasClick(touch.clientX, touch.clientY);
-  }
+  const touch = e.changedTouches[0];
+  handleCanvasClick(touch.clientX, touch.clientY);
 });
 
 nextQuestion();
