@@ -17,7 +17,13 @@
 // Client for the global practice counter backend (see server.js). GET reads
 // the count, POST increments it; both render into the given element and stay
 // silent if the backend is unreachable. fetch is injectable for testing.
+/**
+ * @param {string} apiUrl
+ * @param {HTMLElement} element
+ * @param {typeof fetch} [fetchImpl]
+ */
 export function createCounter(apiUrl, element, fetchImpl = fetch) {
+  /** @param {number} value */
   function render(value) {
     element.textContent = `${value} notes shown`;
   }

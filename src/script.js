@@ -20,6 +20,7 @@ import { getNoteFrequency, playNote } from "./audio.js";
 import { createCounter } from "./counter.js";
 import { createScheduler } from "./spaced-repetition.js";
 
+/** @type {import('./notes.js').Note | null} */
 let currentNote = null;
 let showingAnswer = false;
 let exploreMode = false; // Toggle to show all notes
@@ -27,21 +28,24 @@ let exploreMode = false; // Toggle to show all notes
 // Double-tap/click detection
 let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 200; // milliseconds
+/** @type {number | null} */
 let singleTapTimeout = null;
 
 // Global practice counter backend (see server.js). Point the URL at your
 // deployed endpoint in production.
 const counter = createCounter(
   "http://localhost:8787",
-  document.getElementById("count"),
+  /** @type {HTMLElement} */ (document.getElementById("count")),
 );
 counter.refresh();
 
 // Spaced-repetition scheduler over the note set.
 const scheduler = createScheduler(notes.length);
 
-const canvas = document.getElementById("fretboard");
-const ctx = canvas.getContext("2d");
+const canvas = /** @type {HTMLCanvasElement} */ (
+  document.getElementById("fretboard")
+);
+const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
 
 function nextQuestion() {
   const currentIndex = currentNote ? notes.indexOf(currentNote) : -1;
@@ -51,6 +55,8 @@ function nextQuestion() {
 }
 
 function showAnswer() {
+  if (!currentNote) return;
+
   showingAnswer = true;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 
@@ -62,6 +68,7 @@ function showAnswer() {
 }
 
 // Calculate note position on canvas
+/** @param {import('./notes.js').Note} note */
 function getNotePosition(note) {
   const padding = 40;
   const numStrings = 4;
@@ -85,6 +92,10 @@ function getNotePosition(note) {
 }
 
 // Handle canvas click/touch
+/**
+ * @param {number} clientX
+ * @param {number} clientY
+ */
 function handleCanvasClick(clientX, clientY) {
   const currentTime = Date.now();
   const timeSinceLastTap = currentTime - lastTapTime;

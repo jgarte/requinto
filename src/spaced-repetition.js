@@ -17,29 +17,40 @@
 // Weighted spaced-repetition scheduler over note indices. A note unseen for
 // longer is more likely to be picked; the current note is never repeated.
 // now() and random() are injectable for testing.
+/**
+ * @param {number} noteCount
+ * @param {{ now?: () => number, random?: () => number }} [options]
+ */
 export function createScheduler(noteCount, options = {}) {
   const now = options.now ?? (() => Date.now());
   const random = options.random ?? Math.random;
 
   // When each note index was last shown, staggered so early picks vary.
+  /** @type {Map<number, number>} */
   const lastShown = new Map();
   const start = now();
   for (let i = 0; i < noteCount; i++) {
     lastShown.set(i, start - i * 1000);
   }
 
+  /**
+   * Pick the next note index, never repeating currentIndex.
+   * @param {number} currentIndex
+   * @returns {number}
+   */
   function next(currentIndex) {
     const t = now();
 
     // Weight by time since last shown (capped at 1), never the current note,
     // with a floor so every other note can still appear.
+    /** @type {number[]} */
     const weights = [];
     for (let i = 0; i < noteCount; i++) {
       if (i === currentIndex) {
         weights.push(0);
         continue;
       }
-      const weight = Math.min((t - lastShown.get(i)) / 10000, 1);
+      const weight = Math.min((t - (lastShown.get(i) ?? 0)) / 10000, 1);
       weights.push(Math.max(weight, 0.1));
     }
 

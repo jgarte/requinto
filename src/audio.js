@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // Open string frequencies for C-G-D-A tuning
+/** @type {Record<number, number>} */
 const openStringFrequencies = {
   4: 130.81, // C3
   3: 196.0, // G3
@@ -22,6 +23,10 @@ const openStringFrequencies = {
   1: 440.0, // A4
 };
 
+/**
+ * @param {{ string: number, fret: number }} note
+ * @returns {number}
+ */
 export function getNoteFrequency(note) {
   const openFreq = openStringFrequencies[note.string];
   // Each fret increases pitch by one semitone (multiply by 2^(1/12))
@@ -31,22 +36,25 @@ export function getNoteFrequency(note) {
 // Created lazily on first playback so this module can be imported outside a
 // browser (e.g. tests) and so the context starts after a user gesture, as
 // browsers require.
+/** @type {AudioContext | undefined} */
 let audioContext;
 
+/** @param {number} frequency */
 export function playNote(frequency) {
-  audioContext ??= new (window.AudioContext || window.webkitAudioContext)();
-  const now = audioContext.currentTime;
+  const audio = (audioContext ??= new (window.AudioContext ||
+    /** @type {any} */ (window).webkitAudioContext)());
+  const now = audio.currentTime;
   const duration = 1.3;
 
   // Create a low-pass filter with a bright, resonant cutoff for the
   // metallic banjo timbre
-  const filter = audioContext.createBiquadFilter();
+  const filter = audio.createBiquadFilter();
   filter.type = "lowpass";
   filter.frequency.setValueAtTime(5500, now);
   filter.Q.setValueAtTime(2, now);
 
   // Master gain: sharp pluck attack and fast decay
-  const masterGain = audioContext.createGain();
+  const masterGain = audio.createGain();
   masterGain.gain.setValueAtTime(0, now);
   masterGain.gain.linearRampToValueAtTime(0.3, now + 0.002); // Sharp attack
   masterGain.gain.exponentialRampToValueAtTime(0.08, now + 0.08); // Quick initial decay
@@ -64,11 +72,11 @@ export function playNote(frequency) {
   ];
 
   harmonics.forEach((harmonic, index) => {
-    const osc = audioContext.createOscillator();
+    const osc = audio.createOscillator();
     osc.type = "sine";
     osc.frequency.setValueAtTime(harmonic.freq, now);
 
-    const harmonicGain = audioContext.createGain();
+    const harmonicGain = audio.createGain();
     harmonicGain.gain.setValueAtTime(harmonic.gain, now);
 
     // Higher harmonics decay faster (banjo string characteristic)
@@ -87,5 +95,5 @@ export function playNote(frequency) {
 
   // Connect filter to master gain to output
   filter.connect(masterGain);
-  masterGain.connect(audioContext.destination);
+  masterGain.connect(audio.destination);
 }

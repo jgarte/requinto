@@ -14,9 +14,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+/**
+ * A note position on the fretboard.
+ * @typedef {{ string: number, fret: number, note: string }} Note
+ */
+
 // The natural notes reachable in open position (frets 0-5) on a tenor
 // banjo in C-G-D-A tuning. Shared by the trainer (script.js) and the
 // fretboard renderer (draw.js) so the tuning lives in one place.
+/** @type {Note[]} */
 export const notes = [
   { string: 4, fret: 0, note: "C" },
   { string: 4, fret: 2, note: "D" },

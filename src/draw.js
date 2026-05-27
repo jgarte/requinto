@@ -16,6 +16,21 @@
 
 import { notes } from "./notes.js";
 
+/**
+ * @typedef {{
+ *   padding: number,
+ *   numStrings: number,
+ *   numFrets: number,
+ *   stringSpacing: number,
+ *   fretSpacing: number,
+ * }} FretboardConfig
+ */
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLCanvasElement} canvas
+ * @param {FretboardConfig} config
+ */
 export function drawFrets(ctx, canvas, config) {
   // Draw frets (horizontal lines)
   ctx.strokeStyle = "#666";
@@ -29,6 +44,11 @@ export function drawFrets(ctx, canvas, config) {
   }
 }
 
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLCanvasElement} canvas
+ * @param {FretboardConfig} config
+ */
 export function drawNut(ctx, canvas, config) {
   // Draw nut (first fret thicker)
   ctx.lineWidth = 5;
@@ -38,6 +58,11 @@ export function drawNut(ctx, canvas, config) {
   ctx.stroke();
 }
 
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLCanvasElement} canvas
+ * @param {FretboardConfig} config
+ */
 export function drawStrings(ctx, canvas, config) {
   // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
@@ -51,6 +76,13 @@ export function drawStrings(ctx, canvas, config) {
   }
 }
 
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLCanvasElement} canvas
+ * @param {import('./notes.js').Note | null} currentNote
+ * @param {boolean} showingAnswer
+ * @param {import('./notes.js').Note[] | null} [allNotes]
+ */
 export function drawFretboard(
   ctx,
   canvas,
