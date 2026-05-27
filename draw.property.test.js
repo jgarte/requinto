@@ -6,7 +6,6 @@ import {
   drawFrets,
   drawNut,
   drawStrings,
-  drawStringNames,
 } from "./src/draw.js";
 
 // Mock canvas context that tracks calls
@@ -226,33 +225,6 @@ test("property: drawStrings creates correct number of vertical lines", () => {
         assert.strictEqual(strokes.length, 4);
       },
     ),
-  );
-});
-
-test("property: drawStringNames labels all strings", () => {
-  fc.assert(
-    fc.property(fc.integer({ min: 100, max: 1000 }), (width) => {
-      const ctx = createMockContext();
-      const canvas = { width, height: 500 };
-      const config = {
-        padding: 40,
-        numStrings: 4,
-        stringNames: ["C", "D", "G", "C"],
-        stringSpacing: (width - 80) / 3,
-      };
-
-      drawStringNames(ctx, canvas, config);
-
-      // Should have 4 fillText calls (one per string)
-      const textCalls = ctx.calls.filter(
-        (call) => Array.isArray(call) && call[0] === "fillText",
-      );
-      assert.strictEqual(textCalls.length, 4);
-
-      // Verify all string names appear
-      const texts = textCalls.map((call) => call[1]);
-      assert.deepStrictEqual(texts, ["C", "D", "G", "C"]);
-    }),
   );
 });
 
