@@ -17,7 +17,6 @@
 import { drawFretboard } from "./draw.js";
 import { notes } from "./notes.js";
 import { getNoteFrequency, playNote } from "./audio.js";
-import { createCounter } from "./counter.js";
 import { createScheduler } from "./spaced-repetition.js";
 
 /** @type {import('./notes.js').Note | null} */
@@ -30,14 +29,6 @@ let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 200; // milliseconds
 /** @type {number | null} */
 let singleTapTimeout = null;
-
-// Global practice counter backend (see server.js). Point the URL at your
-// deployed endpoint in production.
-const counter = createCounter(
-  "http://localhost:8787",
-  /** @type {HTMLElement} */ (document.getElementById("count")),
-);
-counter.refresh();
 
 // Spaced-repetition scheduler over the note set.
 const scheduler = createScheduler(notes.length);
@@ -62,9 +53,6 @@ function showAnswer() {
 
   // Play the note
   playNote(getNoteFrequency(currentNote));
-
-  // Count this as one practiced note in the global tally.
-  counter.record();
 }
 
 // Calculate note position on canvas
