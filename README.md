@@ -27,12 +27,6 @@ specifically, i want to show a note less often if the learner gets
 it right consistently, and more often if they tend to struggle to
 remember it
 
-- add more requinto tangeos
-
-- add more requinto melodies
-
-- decide on a ui for selecting various tangeos, melodies, etc.
-
 ## license
 
 agpl-3.0-or-later

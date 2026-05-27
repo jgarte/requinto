@@ -62,7 +62,7 @@ const COUNTER_API = "http://localhost:8787";
 const countElement = document.getElementById("count");
 
 function renderCount(value) {
-  countElement.textContent = `${value} notas practicadas`;
+  countElement.textContent = `${value} notas mostradas`;
 }
 
 // Read the current global count on load; stay silent if the backend is down.
