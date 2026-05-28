@@ -27,13 +27,13 @@ export const NOTE_RADIUS = 12;
 // textAlign set the drawing state.
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 
-interface FretboardConfig {
+type FretboardConfig = {
   padding: number;
   numStrings: number;
   numFrets: number;
   stringSpacing: number;
   fretSpacing: number;
-}
+};
 
 export function drawFrets(
   ctx: CanvasRenderingContext2D,

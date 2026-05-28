@@ -42,10 +42,10 @@ function showAnswer(): void {
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
-interface Position {
+type Position = {
   x: number;
   y: number;
-}
+};
 
 // Calculate note position on canvas
 function getNotePosition(note: Note): Position {

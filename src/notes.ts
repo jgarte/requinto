@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-export interface Note {
+export type Note = {
   string: number;
   fret: number;
   note: string;
-}
+};
 
 // The natural notes reachable in open position (frets 0-5) on a tenor
 // banjo in C-G-D-A tuning. Shared by the trainer (script.ts) and the
