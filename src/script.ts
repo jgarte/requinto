@@ -18,7 +18,7 @@ function nextNote(): void {
     currentNote = notes[chooseNote()];
   }
   showingAnswer = false;
-  drawFretboard(ctx, canvas, config, currentNote);
+  drawFretboard(ctx, canvas, currentNote, showingAnswer);
 
   function chooseNote(): number {
     return Math.floor(Math.random() * notes.length);
@@ -27,7 +27,7 @@ function nextNote(): void {
 
 function showNote(): void {
   showingAnswer = true;
-  drawFretboard(ctx, canvas, config, currentNote);
+  drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
 type Position = {

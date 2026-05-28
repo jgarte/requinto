@@ -1,6 +1,5 @@
 import { notes } from "./notes.js";
 import type { Note } from "./notes.js";
-import { showingAnswer } from "./script.js";
 
 export const NOTE_RADIUS: number = 12;
 
@@ -75,9 +74,10 @@ export function drawStrings(
 export function drawFretboard(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  config: FretboardConfig,
   note: Note,
+  answer: boolean,
 ): void {
+  const config = createFretboardConfig(canvas);
 
   // Wipe the whole canvas before redrawing the frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -107,7 +107,7 @@ export function drawFretboard(
   ctx.fill();
 
   // Display note name
-  if (showingAnswer) {
+  if (answer) {
     ctx.fillStyle = "#FFF";
     ctx.font = "bold 16px sans-serif";
     ctx.textAlign = "center";
