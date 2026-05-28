@@ -16,7 +16,6 @@
 
 import { drawFretboard } from "./draw.js";
 import { notes } from "./notes.js";
-import { createScheduler } from "./spaced-repetition.js";
 
 /** @type {import('./notes.js').Note | null} */
 let currentNote = null;
@@ -27,9 +26,6 @@ let lastTapTime = 0;
 const DOUBLE_TAP_DELAY = 200; // milliseconds
 /** @type {number | null} */
 let singleTapTimeout = null;
-
-// Spaced-repetition scheduler over the note set.
-const scheduler = createScheduler(notes.length);
 
 // DOM access: getElementById fetches the <canvas> element, and getContext("2d")
 // returns its CanvasRenderingContext2D — the handle used for all drawing (see
@@ -42,8 +38,7 @@ const canvas = /** @type {HTMLCanvasElement} */ (
 const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
 
 function nextQuestion() {
-  const currentIndex = currentNote ? notes.indexOf(currentNote) : -1;
-  currentNote = notes[scheduler.next(currentIndex)];
+  currentNote = notes[Math.floor(Math.random() * notes.length)];
   showingAnswer = false;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }

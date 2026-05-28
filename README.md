@@ -20,13 +20,6 @@ used in irish and jazz musics
 
 - [control flow map](docs/control-flow.md) — module map, startup, state, and the main user paths
 
-## todos
-
-- look up an explanation or paper on spaced repetition
-
-specifically, i want to show a note less often if the learner gets
-it right consistently, and more often if they tend to struggle to
-remember it
 
 ## license
 
