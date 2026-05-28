@@ -5,11 +5,6 @@ import type { Note } from "./notes.js";
 let currentNote: Note | null = null;
 let showingAnswer = false;
 
-// DOM access: getElementById fetches the <canvas> element, and getContext("2d")
-// returns its CanvasRenderingContext2D — the handle used for all drawing (see
-// draw.ts).
-// https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
-// https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
 const canvas = document.getElementById("fretboard") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
@@ -54,14 +49,9 @@ function getNotePosition(note: Note): Position {
   return { x, y };
 }
 
-// Handle canvas click/touch
 function handleCanvasClick(clientX: number, clientY: number): void {
   if (!currentNote) return;
 
-  // getBoundingClientRect gives the canvas's size/position in CSS pixels; we
-  // scale the event's viewport coordinates into the canvas's internal pixel
-  // grid (which can differ from its displayed size).
-  // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
   const scaleY = canvas.height / rect.height;
@@ -80,9 +70,6 @@ function handleCanvasClick(clientX: number, clientY: number): void {
   }
 }
 
-// Input via the DOM events API (addEventListener).
-// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
-// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
 canvas.addEventListener("click", (e: MouseEvent) => {
   handleCanvasClick(e.clientX, e.clientY);
 });

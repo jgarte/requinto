@@ -4,9 +4,6 @@ export type Note = {
   note: string;
 };
 
-// The natural notes reachable in open position (frets 0-5) on a tenor
-// banjo in C-G-D-A tuning. Shared by the trainer (script.ts) and the
-// fretboard renderer (draw.ts) so the tuning lives in one place.
 export const notes: Note[] = [
   { string: 4, fret: 0, note: "C" },
   { string: 4, fret: 2, note: "D" },

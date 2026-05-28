@@ -3,14 +3,6 @@ import type { Note } from "./notes.js";
 
 export const NOTE_RADIUS: number = 12;
 
-// This module renders the fretboard with the Canvas 2D API. All drawing goes
-// through a CanvasRenderingContext2D (`ctx`): the path methods (beginPath,
-// moveTo, lineTo, stroke) draw the fret and string lines, arc + fill/stroke
-// draw the note markers, fillText draws note names, and clearRect wipes the
-// canvas before each redraw. strokeStyle / fillStyle / lineWidth / font /
-// textAlign set the drawing state.
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
-
 type FretboardConfig = {
   padding: number;
   numStrings: number;
@@ -24,8 +16,6 @@ export function drawFrets(
   canvas: HTMLCanvasElement,
   config: FretboardConfig,
 ): void {
-  // Draw frets as horizontal lines via the path API: beginPath starts a path,
-  // moveTo/lineTo define the segment, stroke renders it.
   ctx.strokeStyle = "#666";
   ctx.lineWidth = 2;
   for (let i = 0; i <= config.numFrets; i++) {
@@ -42,7 +32,6 @@ export function drawNut(
   canvas: HTMLCanvasElement,
   config: FretboardConfig,
 ): void {
-  // Draw nut (first fret thicker)
   ctx.lineWidth = 5;
   ctx.beginPath();
   ctx.moveTo(config.padding, config.padding);
@@ -55,7 +44,6 @@ export function drawStrings(
   canvas: HTMLCanvasElement,
   config: FretboardConfig,
 ): void {
-  // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
   for (let i = 0; i < config.numStrings; i++) {
@@ -85,7 +73,7 @@ export function drawFretboard(
     (canvas.width - 2 * config.padding) / (config.numStrings - 1);
   config.fretSpacing = (canvas.height - 2 * config.padding) / config.numFrets;
 
-  // clearRect wipes the whole canvas before redrawing the frame.
+  // Wipe the whole canvas before redrawing the frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   drawFrets(ctx, canvas, config);
@@ -112,7 +100,7 @@ export function drawFretboard(
   ctx.arc(x, y, NOTE_RADIUS, 0, 2 * Math.PI);
   ctx.fill();
 
-  // If showing answer, display note name
+  // Display note name
   if (showingAnswer) {
     ctx.fillStyle = "#FFF";
     ctx.font = "bold 16px sans-serif";
