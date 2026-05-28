@@ -108,36 +108,6 @@ export function drawFretboard(
   drawNut(ctx, canvas, config);
   drawStrings(ctx, canvas, config);
 
-  // Draw faint markers at every natural note in open position
-  notes.forEach((note) => {
-    const stringIndex = config.numStrings - note.string;
-    const fretIndex = note.fret;
-
-    let x = config.padding + stringIndex * config.stringSpacing;
-    let y: number;
-
-    if (fretIndex === 0) {
-      // Open string markers above the nut: ctx.arc traces a full circle
-      // (0 to 2π) that stroke() outlines (hollow).
-      y = config.padding - 15;
-      ctx.strokeStyle = "rgba(200, 200, 200, 0.5)";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, 2 * Math.PI);
-      ctx.stroke();
-    } else {
-      // Fretted notes (filled circles)
-      y =
-        config.padding +
-        fretIndex * config.fretSpacing -
-        config.fretSpacing / 2;
-      ctx.fillStyle = "rgba(200, 200, 200, 0.3)";
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-  });
-
   // Highlight current note
   const stringIndex = config.numStrings - currentNote.string;
   const fretIndex = currentNote.fret;
