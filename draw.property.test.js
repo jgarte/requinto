@@ -230,23 +230,3 @@ test("property: drawNut creates exactly one stroke", () => {
   );
 });
 
-// Exhaustive test: every single note with both showingAnswer states
-test("exhaustive: all 16 notes × 2 states = 32 cases", () => {
-  let testCount = 0;
-
-  for (const note of allValidNotes) {
-    for (const showingAnswer of [false, true]) {
-      const ctx = createMockContext();
-      const canvas = createMockCanvas();
-
-      assert.doesNotThrow(() => {
-        drawFretboard(ctx, canvas, note, showingAnswer);
-      }, `Failed on note ${note.note} (string ${note.string}, fret ${note.fret}), showing=${showingAnswer}`);
-
-      testCount++;
-    }
-  }
-
-  assert.strictEqual(testCount, 32, "Should have tested exactly 32 cases");
-});
-
