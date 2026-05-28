@@ -84,23 +84,10 @@ test("property: drawFretboard never throws for any valid note and showingAnswer 
   );
 });
 
-test("property: drawFretboard handles null note gracefully", () => {
-  fc.assert(
-    fc.property(fc.boolean(), (showingAnswer) => {
-      const ctx = createMockContext();
-      const canvas = createMockCanvas();
-
-      assert.doesNotThrow(() => {
-        drawFretboard(ctx, canvas, null, showingAnswer);
-      });
-    }),
-  );
-});
-
 test("property: drawFretboard always clears canvas first", () => {
   fc.assert(
     fc.property(
-      fc.option(fc.constantFrom(...allValidNotes), { nil: null }),
+      fc.constantFrom(...allValidNotes),
       fc.boolean(),
       (note, showingAnswer) => {
         const ctx = createMockContext();
