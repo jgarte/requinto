@@ -29,7 +29,7 @@ let showingAnswer = false;
 const canvas = document.getElementById("fretboard") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-function nextQuestion(): void {
+function nextNote(): void {
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   showingAnswer = false;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
@@ -86,13 +86,13 @@ function handleCanvasClick(clientX: number, clientY: number): void {
 
   const notePos = getNotePosition(currentNote);
   const distance = Math.sqrt(
-    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
+    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
   );
 
   if (distance < NOTE_RADIUS * 1.5) {
     showAnswer();
   } else {
-    nextQuestion();
+    nextNote();
   }
 }
 
@@ -103,4 +103,4 @@ canvas.addEventListener("click", (e: MouseEvent) => {
   handleCanvasClick(e.clientX, e.clientY);
 });
 
-nextQuestion();
+nextNote();
