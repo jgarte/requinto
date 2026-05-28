@@ -12,16 +12,14 @@ used in irish and jazz musics
 ## features
 
 - visual fretboard with interactive note practice
-- audio playback with a bright banjo string sound
 - mobile-friendly responsive design
 - vanilla js and css
 - property-based tests check all note/state combinations
-- double tap fretboard to display all notes, then tap a note to hear it
+- double tap fretboard to display all notes
 
 ## documentation
 
 - [control flow map](docs/control-flow.md) — module map, startup, state, and the main user paths
-- [drawing and audio math](docs/drawing-and-audio-math.md) — fretboard geometry and audio synthesis/DSP math
 
 ## todos
 

@@ -16,7 +16,6 @@
 
 import { drawFretboard } from "./draw.js";
 import { notes } from "./notes.js";
-import { getNoteFrequency, playNote } from "./audio.js";
 import { createScheduler } from "./spaced-repetition.js";
 
 /** @type {import('./notes.js').Note | null} */
@@ -55,9 +54,6 @@ function showAnswer() {
 
   showingAnswer = true;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
-
-  // Play the note
-  playNote(getNoteFrequency(currentNote));
 }
 
 // Calculate note position on canvas
@@ -128,7 +124,6 @@ function handleCanvasClick(clientX, clientY) {
       );
 
       if (distance < 20) {
-        playNote(getNoteFrequency(note));
         return;
       }
     }
