@@ -2,16 +2,25 @@ import { drawFretboard, NOTE_RADIUS } from "./draw.js";
 import { notes } from "./notes.js";
 import type { Note } from "./notes.js";
 
-let currentNote: Note | null = null;
+let currentNote: Note;
+let previousNote: Note;
 let showingAnswer = false;
 
 const canvas = document.getElementById("fretboard") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 function nextNote(): void {
-  currentNote = notes[Math.floor(Math.random() * notes.length)];
+  previousNote = currentNote;
+  currentNote = notes[chooseNote()];
+  while (currentNote === previousNote) {
+    currentNote = notes[chooseNote()];
+  }
   showingAnswer = false;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
+
+  function chooseNote(): number {
+    return Math.floor(Math.random() * notes.length);
+  }
 }
 
 function showNote(): void {
