@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { drawFretboard, NOTE_RADIUS } from "./draw.ts";
-import { notes } from "./notes.ts";
-import type { Note } from "./notes.ts";
+import { drawFretboard, NOTE_RADIUS } from "./draw.js";
+import { notes } from "./notes.js";
+import type { Note } from "./notes.js";
 
 let currentNote: Note | null = null;
 let showingAnswer = false;

@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { notes } from "./notes.ts";
-import type { Note } from "./notes.ts";
+import { notes } from "./notes.js";
+import type { Note } from "./notes.js";
 
 export const NOTE_RADIUS = 12;
 
