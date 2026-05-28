@@ -1,13 +1,15 @@
-import { drawFretboard, NOTE_RADIUS } from "./draw.js";
+import { drawFretboard, NOTE_RADIUS, createFretboardConfig } from "./draw.js";
 import { notes } from "./notes.js";
 import type { Note } from "./notes.js";
+import type { FretboardConfig } from "./draw.js";
 
-let currentNote: Note;
+export let currentNote: Note;
 let previousNote: Note;
-let showingAnswer = false;
+export let showingAnswer = false;
 
 const canvas = document.getElementById("fretboard") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+const config: FretboardConfig = createFretboardConfig(canvas);
 
 function nextNote(): void {
   previousNote = currentNote;
@@ -16,7 +18,7 @@ function nextNote(): void {
     currentNote = notes[chooseNote()];
   }
   showingAnswer = false;
-  drawFretboard(ctx, canvas, currentNote, showingAnswer);
+  drawFretboard(ctx, canvas, config);
 
   function chooseNote(): number {
     return Math.floor(Math.random() * notes.length);
@@ -25,7 +27,7 @@ function nextNote(): void {
 
 function showNote(): void {
   showingAnswer = true;
-  drawFretboard(ctx, canvas, currentNote, showingAnswer);
+  drawFretboard(ctx, canvas, config);
 }
 
 type Position = {
@@ -35,22 +37,17 @@ type Position = {
 
 // Calculate note position on canvas
 function getNotePosition(note: Note): Position {
-  const padding = 40;
-  const numStrings = 4;
-  const numFrets = 5;
-  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
-  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
-
-  const stringIndex = numStrings - note.string;
+  const stringIndex = config.numStrings - note.string;
   const fretIndex = note.fret;
 
-  const x = padding + stringIndex * stringSpacing;
+  const x = config.padding + stringIndex * config.stringSpacing;
   let y: number;
 
   if (fretIndex === 0) {
-    y = padding - 15;
+    y = config.padding - 15;
   } else {
-    y = padding + fretIndex * fretSpacing - fretSpacing / 2;
+    y =
+      config.padding + fretIndex * config.fretSpacing - config.fretSpacing / 2;
   }
 
   return { x, y };

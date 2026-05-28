@@ -1,15 +1,32 @@
 import { notes } from "./notes.js";
 import type { Note } from "./notes.js";
+import { currentNote, showingAnswer } from "./script.js";
 
 export const NOTE_RADIUS: number = 12;
 
-type FretboardConfig = {
+export type FretboardConfig = {
   padding: number;
   numStrings: number;
   numFrets: number;
   stringSpacing: number;
   fretSpacing: number;
 };
+
+export function createFretboardConfig(canvas: HTMLCanvasElement): FretboardConfig {
+  const padding = 40;
+  const numStrings = 4;
+  const numFrets = 5;
+  const stringSpacing = (canvas.width - 2 * padding) / (numStrings - 1);
+  const fretSpacing = (canvas.height - 2 * padding) / numFrets;
+
+  return {
+    padding,
+    numStrings,
+    numFrets,
+    stringSpacing,
+    fretSpacing,
+  };
+}
 
 export function drawFrets(
   ctx: CanvasRenderingContext2D,
@@ -58,20 +75,8 @@ export function drawStrings(
 export function drawFretboard(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  currentNote: Note,
-  showingAnswer: boolean,
+  config: FretboardConfig,
 ): void {
-  const config: FretboardConfig = {
-    padding: 40,
-    numStrings: 4,
-    numFrets: 5,
-    stringSpacing: 0,
-    fretSpacing: 0,
-  };
-
-  config.stringSpacing =
-    (canvas.width - 2 * config.padding) / (config.numStrings - 1);
-  config.fretSpacing = (canvas.height - 2 * config.padding) / config.numFrets;
 
   // Wipe the whole canvas before redrawing the frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
