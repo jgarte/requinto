@@ -88,16 +88,14 @@ export function drawStrings(ctx, canvas, config) {
 /**
  * @param {CanvasRenderingContext2D} ctx
  * @param {HTMLCanvasElement} canvas
- * @param {import('./notes.js').Note | null} currentNote
+ * @param {import('./notes.js').Note} currentNote
  * @param {boolean} showingAnswer
- * @param {import('./notes.js').Note[] | null} [allNotes]
  */
 export function drawFretboard(
   ctx,
   canvas,
   currentNote,
   showingAnswer,
-  allNotes = null,
 ) {
   const config = {
     padding: 40,
@@ -118,8 +116,7 @@ export function drawFretboard(
   drawNut(ctx, canvas, config);
   drawStrings(ctx, canvas, config);
 
-  // Draw faint markers at every natural note in open position. The set
-  // comes from notes.js so the tuning lives in one place.
+  // Draw faint markers at every natural note in open position
   notes.forEach((note) => {
     const stringIndex = config.numStrings - note.string;
     const fretIndex = note.fret;
@@ -149,68 +146,33 @@ export function drawFretboard(
     }
   });
 
-  // Explore mode: show all notes
-  if (allNotes) {
-    allNotes.forEach((note) => {
-      const stringIndex = config.numStrings - note.string;
-      const fretIndex = note.fret;
+  // Highlight current note
+  const stringIndex = config.numStrings - currentNote.string;
+  const fretIndex = currentNote.fret;
 
-      let x, y;
-      x = config.padding + stringIndex * config.stringSpacing;
+  let x = config.padding + stringIndex * config.stringSpacing;
+  let y;
 
-      if (fretIndex === 0) {
-        y = config.padding - 15;
-      } else {
-        y =
-          config.padding +
-          fretIndex * config.fretSpacing -
-          config.fretSpacing / 2;
-      }
-
-      // Draw circle at position with different color
-      ctx.fillStyle = "#4A90E2";
-      ctx.beginPath();
-      ctx.arc(x, y, 12, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Label the note: fillText draws text, with font/textAlign controlling
-      // its typeface and horizontal anchoring.
-      ctx.fillStyle = "#FFF";
-      ctx.font = "bold 16px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(note.note, x, y + 5);
-    });
+  if (fretIndex === 0) {
+    y = config.padding - 15;
+  } else {
+    y =
+      config.padding +
+      fretIndex * config.fretSpacing -
+      config.fretSpacing / 2;
   }
 
-  // Highlight current position (training mode)
-  if (currentNote) {
-    const stringIndex = config.numStrings - currentNote.string;
-    const fretIndex = currentNote.fret;
+  // Draw circle at position
+  ctx.fillStyle = "#FF6B6B";
+  ctx.beginPath();
+  ctx.arc(x, y, 12, 0, 2 * Math.PI);
+  ctx.fill();
 
-    let x, y;
-    x = config.padding + stringIndex * config.stringSpacing;
-
-    if (fretIndex === 0) {
-      y = config.padding - 15;
-    } else {
-      y =
-        config.padding +
-        fretIndex * config.fretSpacing -
-        config.fretSpacing / 2;
-    }
-
-    // Draw circle at position
-    ctx.fillStyle = "#FF6B6B";
-    ctx.beginPath();
-    ctx.arc(x, y, 12, 0, 2 * Math.PI);
-    ctx.fill();
-
-    // If showing answer, display note name
-    if (showingAnswer) {
-      ctx.fillStyle = "#FFF";
-      ctx.font = "bold 16px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(currentNote.note, x, y + 5);
-    }
+  // If showing answer, display note name
+  if (showingAnswer) {
+    ctx.fillStyle = "#FFF";
+    ctx.font = "bold 16px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(currentNote.note, x, y + 5);
   }
 }
