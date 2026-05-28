@@ -21,7 +21,6 @@ import { createScheduler } from "./spaced-repetition.js";
 /** @type {import('./notes.js').Note | null} */
 let currentNote = null;
 let showingAnswer = false;
-let exploreMode = false; // Toggle to show all notes
 
 // Double-tap/click detection
 let lastTapTime = 0;
@@ -86,22 +85,10 @@ function getNotePosition(note) {
  * @param {number} clientY
  */
 function handleCanvasClick(clientX, clientY) {
+  if (!currentNote) return;
+
   const currentTime = Date.now();
   const timeSinceLastTap = currentTime - lastTapTime;
-
-  // Check for double tap
-  if (timeSinceLastTap < DOUBLE_TAP_DELAY) {
-    // Clear any pending single-tap action. setTimeout/clearTimeout (the WHATWG
-    // timer API) defer and cancel the single-tap handler below.
-    // https://developer.mozilla.org/en-US/docs/Web/API/clearTimeout
-    if (singleTapTimeout) {
-      clearTimeout(singleTapTimeout);
-      singleTapTimeout = null;
-    }
-    toggleExploreMode();
-    lastTapTime = 0; // Reset to prevent triple-tap
-    return;
-  }
 
   lastTapTime = currentTime;
 
@@ -115,54 +102,37 @@ function handleCanvasClick(clientX, clientY) {
   const clickX = (clientX - rect.left) * scaleX;
   const clickY = (clientY - rect.top) * scaleY;
 
-  if (exploreMode) {
-    // In explore mode, check if any note was clicked (immediate, no delay)
-    for (const note of notes) {
-      const notePos = getNotePosition(note);
-      const distance = Math.sqrt(
-        Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
-      );
+  const notePos = getNotePosition(currentNote);
+  const distance = Math.sqrt(
+    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
+  );
 
-      if (distance < 20) {
-        return;
-      }
-    }
-  } else {
-    // Normal training mode - delay action to detect potential double-tap
-    if (!currentNote) return;
-
-    const notePos = getNotePosition(currentNote);
-    const distance = Math.sqrt(
-      Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
-    );
-
-    // Delay the action with setTimeout to allow double-tap detection; the
-    // returned id is cleared above if a second tap arrives in time.
-    // https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
-    singleTapTimeout = setTimeout(() => {
-      if (distance < 20) {
-        showAnswer();
-      } else {
-        nextQuestion();
-      }
+  // Check for double tap
+  if (timeSinceLastTap < DOUBLE_TAP_DELAY) {
+    // Clear any pending single-tap action. setTimeout/clearTimeout (the WHATWG
+    // timer API) defer and cancel the single-tap handler below.
+    // https://developer.mozilla.org/en-US/docs/Web/API/clearTimeout
+    if (singleTapTimeout) {
+      clearTimeout(singleTapTimeout);
       singleTapTimeout = null;
-    }, DOUBLE_TAP_DELAY);
+    }
+    lastTapTime = 0; // Reset to prevent triple-tap
+    return;
   }
+
+  // Delay the action with setTimeout to allow double-tap detection; the
+  // returned id is cleared above if a second tap arrives in time.
+  // https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
+  singleTapTimeout = setTimeout(() => {
+    if (distance < 20) {
+      showAnswer();
+    } else {
+      nextQuestion();
+    }
+    singleTapTimeout = null;
+  }, DOUBLE_TAP_DELAY);
 }
 
-function toggleExploreMode() {
-  exploreMode = !exploreMode;
-  if (exploreMode) {
-    drawExploreMode();
-  } else {
-    // Return to training mode with the same note
-    drawFretboard(ctx, canvas, currentNote, showingAnswer);
-  }
-}
-
-function drawExploreMode() {
-  drawFretboard(ctx, canvas, null, false, notes);
-}
 
 // Input via the DOM events API (addEventListener). A "click" MouseEvent carries
 // clientX/clientY; a "touchend" TouchEvent carries them on changedTouches[0],

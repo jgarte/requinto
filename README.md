@@ -15,7 +15,6 @@ used in irish and jazz musics
 - mobile-friendly responsive design
 - vanilla js and css
 - property-based tests check all note/state combinations
-- double tap fretboard to display all notes
 
 ## documentation
 
