@@ -16,37 +16,39 @@
 
 import { drawFretboard, NOTE_RADIUS } from "./draw.js";
 import { notes } from "./notes.js";
+import type { Note } from "./notes.js";
 
-/** @type {import('./notes.js').Note | null} */
-let currentNote = null;
+let currentNote: Note | null = null;
 let showingAnswer = false;
 
 // DOM access: getElementById fetches the <canvas> element, and getContext("2d")
 // returns its CanvasRenderingContext2D — the handle used for all drawing (see
-// draw.js).
+// draw.ts).
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-const canvas = /** @type {HTMLCanvasElement} */ (
-  document.getElementById("fretboard")
-);
-const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+const canvas = document.getElementById("fretboard") as HTMLCanvasElement;
+const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-function nextQuestion() {
+function nextQuestion(): void {
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   showingAnswer = false;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
-function showAnswer() {
+function showAnswer(): void {
   if (!currentNote) return;
 
   showingAnswer = true;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
 
+interface Position {
+  x: number;
+  y: number;
+}
+
 // Calculate note position on canvas
-/** @param {import('./notes.js').Note} note */
-function getNotePosition(note) {
+function getNotePosition(note: Note): Position {
   const padding = 40;
   const numStrings = 4;
   const numFrets = 5;
@@ -57,7 +59,7 @@ function getNotePosition(note) {
   const fretIndex = note.fret;
 
   const x = padding + stringIndex * stringSpacing;
-  let y;
+  let y: number;
 
   if (fretIndex === 0) {
     y = padding - 15;
@@ -69,11 +71,7 @@ function getNotePosition(note) {
 }
 
 // Handle canvas click/touch
-/**
- * @param {number} clientX
- * @param {number} clientY
- */
-function handleCanvasClick(clientX, clientY) {
+function handleCanvasClick(clientX: number, clientY: number): void {
   if (!currentNote) return;
 
   // getBoundingClientRect gives the canvas's size/position in CSS pixels; we
@@ -88,7 +86,7 @@ function handleCanvasClick(clientX, clientY) {
 
   const notePos = getNotePosition(currentNote);
   const distance = Math.sqrt(
-    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2),
+    Math.pow(clickX - notePos.x, 2) + Math.pow(clickY - notePos.y, 2)
   );
 
   if (distance < NOTE_RADIUS * 1.5) {
@@ -98,11 +96,10 @@ function handleCanvasClick(clientX, clientY) {
   }
 }
 
-
 // Input via the DOM events API (addEventListener).
 // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
-canvas.addEventListener("click", (e) => {
+canvas.addEventListener("click", (e: MouseEvent) => {
   handleCanvasClick(e.clientX, e.clientY);
 });
 

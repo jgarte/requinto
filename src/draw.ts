@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { notes } from "./notes.js";
+import type { Note } from "./notes.js";
 
 export const NOTE_RADIUS = 12;
 
@@ -26,22 +27,19 @@ export const NOTE_RADIUS = 12;
 // textAlign set the drawing state.
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 
-/**
- * @typedef {{
- *   padding: number,
- *   numStrings: number,
- *   numFrets: number,
- *   stringSpacing: number,
- *   fretSpacing: number,
- * }} FretboardConfig
- */
+interface FretboardConfig {
+  padding: number;
+  numStrings: number;
+  numFrets: number;
+  stringSpacing: number;
+  fretSpacing: number;
+}
 
-/**
- * @param {CanvasRenderingContext2D} ctx
- * @param {HTMLCanvasElement} canvas
- * @param {FretboardConfig} config
- */
-export function drawFrets(ctx, canvas, config) {
+export function drawFrets(
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  config: FretboardConfig
+): void {
   // Draw frets as horizontal lines via the path API: beginPath starts a path,
   // moveTo/lineTo define the segment, stroke renders it.
   ctx.strokeStyle = "#666";
@@ -55,12 +53,11 @@ export function drawFrets(ctx, canvas, config) {
   }
 }
 
-/**
- * @param {CanvasRenderingContext2D} ctx
- * @param {HTMLCanvasElement} canvas
- * @param {FretboardConfig} config
- */
-export function drawNut(ctx, canvas, config) {
+export function drawNut(
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  config: FretboardConfig
+): void {
   // Draw nut (first fret thicker)
   ctx.lineWidth = 5;
   ctx.beginPath();
@@ -69,12 +66,11 @@ export function drawNut(ctx, canvas, config) {
   ctx.stroke();
 }
 
-/**
- * @param {CanvasRenderingContext2D} ctx
- * @param {HTMLCanvasElement} canvas
- * @param {FretboardConfig} config
- */
-export function drawStrings(ctx, canvas, config) {
+export function drawStrings(
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  config: FretboardConfig
+): void {
   // Draw strings (vertical lines)
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
@@ -87,19 +83,13 @@ export function drawStrings(ctx, canvas, config) {
   }
 }
 
-/**
- * @param {CanvasRenderingContext2D} ctx
- * @param {HTMLCanvasElement} canvas
- * @param {import('./notes.js').Note} currentNote
- * @param {boolean} showingAnswer
- */
 export function drawFretboard(
-  ctx,
-  canvas,
-  currentNote,
-  showingAnswer,
-) {
-  const config = {
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  currentNote: Note,
+  showingAnswer: boolean
+): void {
+  const config: FretboardConfig = {
     padding: 40,
     numStrings: 4,
     numFrets: 5,
@@ -124,7 +114,7 @@ export function drawFretboard(
     const fretIndex = note.fret;
 
     let x = config.padding + stringIndex * config.stringSpacing;
-    let y;
+    let y: number;
 
     if (fretIndex === 0) {
       // Open string markers above the nut: ctx.arc traces a full circle
@@ -153,7 +143,7 @@ export function drawFretboard(
   const fretIndex = currentNote.fret;
 
   let x = config.padding + stringIndex * config.stringSpacing;
-  let y;
+  let y: number;
 
   if (fretIndex === 0) {
     y = config.padding - 15;
