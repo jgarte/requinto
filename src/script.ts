@@ -24,8 +24,6 @@ function nextNote(): void {
 }
 
 function showNote(): void {
-  if (!currentNote) return;
-
   showingAnswer = true;
   drawFretboard(ctx, canvas, currentNote, showingAnswer);
 }
@@ -57,9 +55,6 @@ function getNotePosition(note: Note): Position {
 
   return { x, y };
 }
-
-function handleCanvasClick(clientX: number, clientY: number): void {
-  if (!currentNote) return;
 
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
