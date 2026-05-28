@@ -1,6 +1,6 @@
 import { notes } from "./notes.js";
 import type { Note } from "./notes.js";
-import { currentNote, showingAnswer } from "./script.js";
+import { showingAnswer } from "./script.js";
 
 export const NOTE_RADIUS: number = 12;
 
@@ -76,6 +76,7 @@ export function drawFretboard(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   config: FretboardConfig,
+  note: Note,
 ): void {
 
   // Wipe the whole canvas before redrawing the frame
@@ -86,8 +87,8 @@ export function drawFretboard(
   drawStrings(ctx, canvas, config);
 
   // Highlight current note
-  const stringIndex = config.numStrings - currentNote.string;
-  const fretIndex = currentNote.fret;
+  const stringIndex = config.numStrings - note.string;
+  const fretIndex = note.fret;
 
   let x = config.padding + stringIndex * config.stringSpacing;
   let y: number;
@@ -110,6 +111,6 @@ export function drawFretboard(
     ctx.fillStyle = "#FFF";
     ctx.font = "bold 16px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(currentNote.note, x, y + 5);
+    ctx.fillText(note.note, x, y + 5);
   }
 }
