@@ -56,6 +56,10 @@ function getNotePosition(note: Note): Position {
   return { x, y };
 }
 
+async function handleCanvasClick(
+  clientX: number,
+  clientY: number,
+): Promise<void> {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
   const scaleY = canvas.height / rect.height;
@@ -69,6 +73,8 @@ function getNotePosition(note: Note): Position {
 
   if (distance < NOTE_RADIUS * 1.5) {
     showNote();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    nextNote();
   } else {
     nextNote();
   }
